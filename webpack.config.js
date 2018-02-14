@@ -27,7 +27,7 @@ module.exports = function (env) {
 						'angular-templatecache-loader'
 					]
 				}, {
-					test: /\.(woff|woff2|eot|ico|ttf|otf|png|svg|jpg|gif)$/,
+					test: /\.(json|woff|woff2|eot|ico|ttf|otf|png|svg|jpg|gif)$/,
 					use: [
 						'file-loader'
 					]

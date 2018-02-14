@@ -20,9 +20,8 @@
 						<ul class="dropdown-menu" box-vscroll show-info-delay="2000" 
 							 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" 
 							 style="height: 100px">
-							<li ng-repeat="cat in ctrl.items| limitTo:limit1:begin1">
-								<a href ng-bind="cat">
-								</a>
+							<li ng-repeat="item in ctrl.items| limitTo:limit1:begin1">
+								<a href ng-bind="item.lastname"></a>
 							</li>
 						</ul>
 					</div>
@@ -60,17 +59,22 @@
 						<table class="table table-hover table-striped">
 							<thead>
 								<tr>
-									<th style="width:30px">First</th>
-									<th style="width:20px">2e</th>
-									<th>Third</th>
-									<th>Fourth</th>
-									<th style="width:50px">Last</th>
-									<th style="width:20px"></th>
+									<th></th>
+									<th>Lastname</th>
+									<th>Firstname</th>
+									<th>Company</th>
+									<th>Email</th>
+									<th>Phone</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="item in filteredItems = (ctrl.items| filter:search) |limitTo:limit3:begin3">
-									<td ng-bind="item"></td><td><span class="glyphicon glyphicon-user"></span></td><td>Mark</td><td>Otto</td><td>@mdo</td><td><span class="glyphicon glyphicon-adjust"></span></td>
+									<td><span class="glyphicon glyphicon-user"></span></td>
+									<td ng-bind="item.lastname"></td>
+									<td ng-bind="item.firstname"></td>
+									<td ng-bind="item.company"></td>
+									<td ng-bind="item.email"></td>
+									<td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
 								</tr>
 							</tbody>
 						</table>
