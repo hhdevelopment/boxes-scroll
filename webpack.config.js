@@ -1,6 +1,7 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 var webpack = require('webpack');
 var path = require('path');
 
@@ -61,9 +62,10 @@ module.exports = function (env) {
 			}),
 			new HtmlWebpackPlugin({
 				template: './index.ejs',
-				favicon:'favicon.ico'
+				favicon: 'favicon.ico'
 			}),
-			new CleanObsoleteChunks({verbose: true})
+			new CleanObsoleteChunks({verbose: true}),
+			new CopyWebpackPlugin(['users.json'])
 		]
 	};
 };
