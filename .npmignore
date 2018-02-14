@@ -1,0 +1,12 @@
+/nbproject/
+/src/
+/node_modules/
+/public_html/
+/gulpfile.js
+/bitbucket-pipelines.yml
+/.gitignore
+/.npmignore
+/.npmrc
+/npm-debug.log
+/webpack.config.js
+

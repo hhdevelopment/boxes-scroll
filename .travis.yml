@@ -1,0 +1,58 @@
+language: node_js
+node_js:
+  - "6"
+cache:
+  directories:
+    - "node_modules"
+branches:
+  only:
+  - master
+before_install:
+  - sudo apt-get install lftp
+before_script:
+  - git config user.email "$GITHUB_MAIL"
+  - git config user.name "$GITHUB_USER"
+  - npm install -g gulp-cli
+script: 
+  - gulp
+  - webpack
+deploy:
+  - provider: script
+    script: git checkout master
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script: npm version patch -m "[ci skip]"
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/hhdevelopment/boxes-scroll.git master
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: releases
+    user: "$GITHUB_USER"
+    api_key: "$GITHUB_TOKEN"
+    file_glob: true
+    file: dist/*
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: npm
+    email: "$NPM_MAIL"
+    api_key: "$NPM_TOKEN"
+    skip_cleanup: true
+    on: 
+      branch: master
+  - provider: script
+    script: lftp sftp://$SFTP_1AND1_HOST -u $SFTP_1AND1_USER,$SFTP_1AND1_PWD -e "lcd public_html; cd boxes-scroll; mrm *; mput *; bye"
+    skip_cleanup: true
+    on: 
+      branch: master
+  - provider: script
+    script: bower register boxes-scroll https://github.com/hhdevelopment/boxes-scroll.git
+    skip_cleanup: true
+    on: 
+      branch: register_bower
