@@ -11,12 +11,36 @@ import './boxesscroll.js';
 	ng.module('app', ['boxes.scroll']).controller('AppCtrl', AppCtrl);
 	function AppCtrl($http, $filter) {
 		var ctrl = this;
-		ctrl.categories = [{'name':'Directory 1', nb:5},{'name':'Directory 2', nb:2000},{'name':'Directory 3', nb:20},{'name':'Directory 4', nb:0}];
+		ctrl.categories = [{'name':'Family', nb:5},{'name':'Works', nb:2000},{'name':'Friends', nb:20},{'name':'Blacklist', nb:0}];
 		ctrl.selectedCategory = null;
 		ctrl.selectCategory = selectCategory;
+		ctrl.keydown = keydown;
 		ctrl.items = null;
 		ctrl.height = 300;
 		
+		function keydown(evt, limit) {
+			var event = evt.originalEvent;
+			var inc = 0;
+			if(event.which === 38) { // UP
+				inc = -1;
+			} else if(event.which === 40) { // DOWN
+				inc = 1;
+			} else if(event.which === 33) { // PAGEUP
+				inc = -limit;
+			} else if(event.which === 34) { // PAGEDOWN
+				inc = limit;
+			} else if(event.which === 35) { // END
+				inc = ctrl.items.length;
+			} else if(event.which === 36) { // HOME
+				inc = -ctrl.items.length;
+			}
+			if (inc !== 0) {
+				event.stopImmediatePropagation();
+				event.stopPropagation();
+				event.preventDefault();
+			}
+			return inc;
+		}
 		function selectCategory(cat) {
 			ctrl.selectedCategory = cat;
 			$http.get('users.json').then(function(response) {

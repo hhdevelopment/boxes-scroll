@@ -12,22 +12,21 @@
 			<div class="row">
 				<div class="col-xs-4">
 					<div class="btn-group">
-						<button type="button" class="btn">Directories</button>
-						<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="btn">Directories {{limit1}}</button>
+						<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" 
+								  ng-keydown="begin1 = begin1 + ctrl.keydown($event, limit1)"
+								  aria-haspopup="true" aria-expanded="false">
 							<span class="caret"></span>
 							<span class="sr-only">Toggle Dropdown</span>
 						</button>
-						<ul class="dropdown-menu" box-vscroll show-info-delay="2000" 
-							 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" 
-							 style="height: 100px">
+						<ul class="dropdown-menu" box-vscroll show-info-delay="2000"  allow-keynav="true"
+							 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" max="10">
 							<li ng-repeat="item in ctrl.items| limitTo:limit1:begin1">
 								<a href ng-bind="item.lastname"></a>
 							</li>
 						</ul>
 					</div>
-					<div box-vscroll class="list-group" show-info-delay="2000" total="ctrl.categories.length" 
-						  ng-begin="begin0" ng-limit="limit0"
-						  style="border:solid 1px black;height: 200px">
+					<div class="list-group" sstyle="border:solid 1px black;height: 200px">
 						<a href="#" class="list-group-item" ng-repeat="cat in ctrl.categories| limitTo:limit0:begin0" 
 							ng-click="ctrl.selectCategory(cat)"
 							ng-class="{active:ctrl.selectedCategory === cat}">
@@ -36,49 +35,80 @@
 							<span class="badge" ng-bind="cat.nb"></span>
 						</a>
 					</div>			
-<!--					<box-hscroll  class="scroll-horizontal" show-info-delay="2000" total="ctrl.items.length" 
-										  ng-begin="begin2" ng-limit="limit2" size="300" tag-items="div"
-										  style="border:solid 1px black;height: 60px;padding-top: 16px">
-						<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: initial">
-							<span class="glyphicon glyphicon-user"></span>
-							<span ng-bind="item"></span>
-						</div>
-					</box-hscroll>-->
+					<!--					<box-hscroll  class="scroll-horizontal" show-info-delay="2000" total="ctrl.items.length" 
+															  ng-begin="begin2" ng-limit="limit2" size="300" tag-items="div"
+															  style="border:solid 1px black;height: 60px;padding-top: 16px">
+											<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: initial">
+												<span class="glyphicon glyphicon-user"></span>
+												<span ng-bind="item"></span>
+											</div>
+										</box-hscroll>-->
 				</div>
 				<div class="col-xs-8">
-					<input type="number" class="form-control input-lg" placeholder="Text input" ng-model="ctrl.height">
 					<form class="form-inline">
+						<input type="number" class="form-control" placeholder="Text input" ng-model="ctrl.height">
+						<input type="checkbox" class="form-control" ng-model="withoutDirective">
 						<input ng-model="search" class="form-control"/>
-						<button type="button" class="btn btn-default" ng-click="begin3 = begin3 - 1;"><span class="glyphicon glyphicon-chevron-left"></span></button>
-						<b ng-bind="begin3+1"></b>
-						<button type="button" class="btn btn-default" ng-click="begin3 = begin3 + 1;"><span class="glyphicon glyphicon-chevron-right"></span></button>
 					</form>
-					<box-vscroll show-info-delay="2000" total="filteredItems.length"
-										  ng-begin="begin3" ng-limit="limit3"
-										  style="height: {{ctrl.height}}px; border:solid 1px black;">
-						<table class="table table-hover table-striped">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Lastname</th>
-									<th>Firstname</th>
-									<th>Company</th>
-									<th>Email</th>
-									<th>Phone</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="item in filteredItems = (ctrl.items| filter:search) |limitTo:limit3:begin3">
-									<td><span class="glyphicon glyphicon-user"></span></td>
-									<td ng-bind="item.lastname"></td>
-									<td ng-bind="item.firstname"></td>
-									<td ng-bind="item.company"></td>
-									<td ng-bind="item.email"></td>
-									<td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
-								</tr>
-							</tbody>
-						</table>
-					</box-vscroll>
+					<div  ng-if="!withoutDirective">
+						<form class="form-inline">
+							<button type="button" class="btn btn-default" ng-click="begin3 = begin3 - 1;"><span class="glyphicon glyphicon-chevron-left"></span></button>
+							<b ng-bind="begin3 + 1"></b>
+							<button type="button" class="btn btn-default" ng-click="begin3 = begin3 + 1;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+						</form>
+						<box-vscroll show-info-delay="2000" total="filteredItems.length" allow-keynav="true"
+										 ng-begin="begin3" ng-limit="limit3"
+										 style="height: {{ctrl.height}}px; border:solid 1px black;">
+							<table class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Lastname</th>
+										<th>Firstname</th>
+										<th>Company</th>
+										<th>Email</th>
+										<th>Phone</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in filteredItems = (ctrl.items| filter:search) |limitTo:limit3:begin3">
+										<td><span class="glyphicon glyphicon-user"></span></td>
+										<td ng-bind="item.lastname"></td>
+										<td ng-bind="item.firstname"></td>
+										<td ng-bind="item.company"></td>
+										<td ng-bind="item.email"></td>
+										<td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</box-vscroll>
+					</div>
+					<div  ng-if="withoutDirective">
+						<div style="height: {{ctrl.height}}px; border:solid 1px black;overflow-y: scroll">
+							<table class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Lastname</th>
+										<th>Firstname</th>
+										<th>Company</th>
+										<th>Email</th>
+										<th>Phone</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in filteredItems = (ctrl.items| filter:search)">
+										<td><span class="glyphicon glyphicon-user"></span></td>
+										<td ng-bind="item.lastname"></td>
+										<td ng-bind="item.firstname"></td>
+										<td ng-bind="item.company"></td>
+										<td ng-bind="item.email"></td>
+										<td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
