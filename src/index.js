@@ -9,17 +9,35 @@ import './boxesscroll.js';
 (function (ng, __) {
 	'use strict';
 	ng.module('app', ['boxes.scroll']).controller('AppCtrl', AppCtrl);
-	function AppCtrl($http, $filter) {
+	function AppCtrl($rootScope, $http, $filter) {
 		var ctrl = this;
 		ctrl.selectCategory = selectCategory;
 		ctrl.clearSearch = clearSearch;
 		ctrl.keydown = keydown;
+		ctrl.countWatchers = countWatchers;
 
 		ctrl.categories = [{'name': 'All', nb: 10000}, {'name': 'Family', nb: 5}, {'name': 'Works', nb: 2000}, {'name': 'Friends', nb: 20}, {'name': 'Blacklist', nb: 0}];
 		ctrl.selectedCategory = null;
 		ctrl.items = null;
 		ctrl.height = 300;
 		ctrl.search = '';
+		ctrl.nbWatchers = '?';
+
+		function countWatchers() {
+			var root = $rootScope;
+			var count = root.$$watchers ? root.$$watchers.length : 0;
+			var pendingChildHeads = [root.$$childHead];
+			var currentScope;
+			while (pendingChildHeads.length)	{
+				currentScope = pendingChildHeads.shift();
+				while (currentScope)	{
+					count += currentScope.$$watchers ? currentScope.$$watchers.length : 0;
+					pendingChildHeads.push(currentScope.$$childHead);
+					currentScope = currentScope.$$nextSibling;
+				}
+			}
+			ctrl.nbWatchers =  count;
+		}
 
 		function clearSearch() {
 			ctrl.search = '';

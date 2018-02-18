@@ -275,7 +275,16 @@
 			hideScrollbar();
 			wheelData.begin = manageWheelHandler(event, wheelData.begin || $scope.ngBegin);
 			moveGrabber(getGrabberOffsetPercentFromBegin(wheelData.begin));
+//			if (!wheelData.timer) {
+//				$scope.ngBegin = wheelData.begin;
+//				wheelData.timer = $timeout(function (scope, data) {
+//					scope.ngBegin = data.begin;
+//					data.timer = null;
+//					data.begin = null;
+//				}, 60, true, $scope, wheelData);
+//			}
 			$scope.ngBegin = wheelData.begin;
+			wheelData.begin = null;
 		}
 		function manageWheelHandler(event, begin) {
 			var evt = event.originalEvent || event;
@@ -399,24 +408,13 @@
 				}
 			}
 		}
-		var canvas;
 		function adjustLimit() {
 			if ($scope.max) {
 				$scope.ngLimit = $scope.max;
 			} else if ($scope.total) {
 				var element;
 				if (ctrl.horizontal) {
-					if(!canvas) {
-						canvas = document.createElement("canvas");
-						canvas.setAttribute("width", window.innerWidth);
-						canvas.setAttribute("height", window.innerHeight);
-						canvas.setAttribute("style", "position: fixed; top:0px; left:0px;");
-//						document.body.appendChild(canvas);
-						var ctx = canvas.getContext("2d");
-						ctx.fillRect( getEltArea().right -12,  getEltArea().top +2, 10, 10);
-					}
 					element = document.elementFromPoint(getEltArea().right - 1, getEltArea().top + 1);
-					console.log("ELEMENT", element, ctrl.elt.contains(element), added);
 				} else {
 					element = document.elementFromPoint(getEltArea().left + 1, getEltArea().bottom - 1);
 				}

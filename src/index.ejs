@@ -38,7 +38,7 @@
 						</div>
 					</div>
 					<box-hscroll  show-info-delay="2000" total="ctrl.items.length" ng-begin="begin2" ng-limit="limit2"
-									  style="border:solid 1px black;height: 52px;padding-top: 16px">
+									  style="border:solid 1px black;height: 55px;padding-top: 16px">
 						<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: initial">
 							<span class="glyphicon glyphicon-user"></span>
 							<span ng-bind="item.lastname"></span>
@@ -48,13 +48,13 @@
 				<div class="col-xs-9">
 					<div class="form-group">
 						<div class="row">
-							<div class="col-xs-4">
+							<div class="col-xs-3">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="glyphicon glyphicon-resize-vertical"></span></span>
 									<input type="number" class="form-control" ng-model="ctrl.height">
 								</div>
 							</div>
-							<div class="col-xs-4">
+							<div class="col-xs-3">
 								<div class="input-group">
 									<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
 									<input type="text" class="form-control" placeholder="Search" ng-model="ctrl.search">
@@ -65,13 +65,19 @@
 									</span>
 								</div>
 							</div>
-							<div class="col-xs-4">
+							<div class="col-xs-3">
 								<div class="input-group">
 									<span class="input-group-addon">
 										<input type="checkbox" ng-model="withoutDirective">
 									</span>
 									<input type="text" class="form-control" placeholder="Try without directive" readonly="">
 								</div>
+							</div>
+							<div class="col-xs-3">
+								<button class="btn btn-default" type="button" ng-click="ctrl.countWatchers();">
+									<span class="glyphicon glyphicon-eye-open"></span>
+									Watchers <span class="badge" ng-bind="ctrl.nbWatchers"></span>
+								</button>
 							</div>
 						</div>
 					</div>
