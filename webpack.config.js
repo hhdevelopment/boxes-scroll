@@ -1,7 +1,7 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 
@@ -42,6 +42,7 @@ module.exports = function (env) {
 			]
 		},
 		plugins: [
+			new CopyWebpackPlugin(['users.json']),
 			new webpack.ProvidePlugin({
 				_: 'lodash',
 				'window.jQuery': 'jquery',
@@ -64,8 +65,7 @@ module.exports = function (env) {
 				template: './index.ejs',
 				favicon: 'favicon.ico'
 			}),
-			new CleanObsoleteChunks({verbose: true}),
-			new CopyWebpackPlugin(['users.json'])
+			new CleanObsoleteChunks({verbose: true})
 		]
 	};
 };

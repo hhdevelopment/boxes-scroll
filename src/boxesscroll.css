@@ -1,3 +1,7 @@
+[box-vscroll], [box-hscroll],
+box-vscroll, box-hscroll {
+	background-repeat: no-repeat;
+}
 [box-vscroll], [box-hscroll] {
 /*	position:inherit;*/
 }
@@ -11,21 +15,23 @@ box-vscroll, box-hscroll {
 [box-vscroll] > *, box-vscroll > * {
 	width: calc(100% - 4px) !important;
 }
+[box-hscroll], box-hscroll {
+	background-size: 100% 4px;
+}
+[box-hscroll] > *, box-hscroll > * {
+	height: calc(100% - 4px) !important;
+}
 [box-vscroll], box-vscroll {
-	background-repeat: no-repeat;
 	background-position: right 0%;
 	overflow-y: hidden;
 }
-[box-hscroll] {
-	background-repeat: no-repeat;
+[box-hscroll], box-hscroll {
 	background-position: 0% bottom;
 	overflow-x: hidden;
 }
 [box-vscroll], [box-hscroll], box-vscroll, box-hscroll {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw8Zb4bSvgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12M4cOAAAASEAkEwrrB4AAAAAElFTkSuQmCC');
 }
-[box-vscroll][hover][collapsible]:hover, [box-hscroll][hover][collapsible]:hover, 
-box-vscroll[hover][collapsible]:hover, box-hscroll[hover][collapsible]:hover,
 [box-vscroll][hover], [box-hscroll][hover], box-vscroll[hover], box-hscroll[hover] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw83s1DfcQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12NYuXIlAAP6Afx7V39BAAAAAElFTkSuQmCC');
 }
@@ -33,10 +39,11 @@ box-vscroll[hover][collapsible]:hover, box-hscroll[hover][collapsible]:hover,
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDxAQ2wBkhAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12OorKwEAALaAWyeCJ/eAAAAAElFTkSuQmCC');
 }
 
-[box-vscroll] > span.infos-crolling, box-vscroll > span.infos-crolling {
+[box-hscroll] > span.infos-scrolling, box-hscroll > span.infos-scrolling,
+[box-vscroll] > span.infos-scrolling, box-vscroll > span.infos-scrolling {
 	display: inline-block;
 	width: auto !important;
-	height: auto;
+	height: auto !important;
 	position:absolute;
 	bottom:10px;
 	right:10px;
@@ -54,35 +61,47 @@ box-vscroll[hover][collapsible]:hover, box-hscroll[hover][collapsible]:hover,
 	border-radius: 10px;
 }
 
-box-vscroll > .scrollbar,
-[box-vscroll] > .scrollbar {
-	width:16px  !important;
-	height:100%;
+box-hscroll > .scrollbar, [box-hscroll] > .scrollbar,
+[box-vscroll] > .scrollbar, box-vscroll > .scrollbar {
+	background-repeat: no-repeat;
 	position:absolute; /*You may also use fixed depending on your needs.*/
-	right:0;
-	top:0; /*If you want it at the bottom you probably want bottom:0 instead*/
 	z-index: 999;
 	opacity: 0.7;
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw8Zb4bSvgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12M4cOAAAASEAkEwrrB4AAAAAElFTkSuQmCC');
-	background-repeat: no-repeat;
-	background-position: right 0%;
-	background-size: 16px 100%;
 	cursor: default;
 }
+box-hscroll > .scrollbar, [box-hscroll] > .scrollbar {
+	width:100%;
+	height:16px  !important;
+	background-position: 0% bottom;
+	background-size: 100% 16px;
+	left:0;
+	bottom:0;
+}
+[box-vscroll] > .scrollbar, box-vscroll > .scrollbar {
+	width:16px  !important;
+	height:100%;
+	background-position: right 0%;
+	background-size: 16px 100%;
+	right:0;
+	top:0;
+}
 
+box-hscroll > .scrollbar[mode='hidden'],
+[box-hscroll] > .scrollbar[mode='hidden'],
 box-vscroll > .scrollbar[mode='hidden'],
 [box-vscroll] > .scrollbar[mode='hidden'] {
 	display: none;
 }
+box-hscroll > .scrollbar[mode='hover'],
+[box-hscroll] > .scrollbar[mode='hover'],
 box-vscroll > .scrollbar[mode='hover'],
 [box-vscroll] > .scrollbar[mode='hover'] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw83s1DfcQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12NYuXIlAAP6Afx7V39BAAAAAElFTkSuQmCC');
-/*	cursor: grab;
-	cursor: -webkit-grab;*/
 }
+box-hscroll > .scrollbar[mode='drag'],
+[box-hscroll] > .scrollbar[mode='drag'],
 box-vscroll > .scrollbar[mode='drag'],
 [box-vscroll] > .scrollbar[mode='drag'] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDxAQ2wBkhAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12OorKwEAALaAWyeCJ/eAAAAAElFTkSuQmCC');
-/*	cursor: grabbing;
-	cursor: -webkit-grabbing;*/
 }
