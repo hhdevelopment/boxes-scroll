@@ -6,42 +6,39 @@
 	'use strict';
 	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices)
 			  .directive('boxVscroll', BoxVscroll).directive('boxHscroll', BoxHscroll);
+	var scope = {
+		'total': '<',
+		'max': '<',
+		'showInfoDelay': '<',
+		'debounce': '<',
+		'allowKeynav': '<',
+		'ngBegin': '=',
+		'ngLimit': '='//,
+//		'paddingBefore':'<',
+//		'paddingAfter':'<'
+	};
 	/* @ngInject */
-	function BoxVscroll($timeout, $interval, $compile, boxesScrollServices) {
+	function BoxVscroll($timeout, $interval, $compile) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
 			controllerAs: 'ctrl',
-			scope: {
-				'total': '<',
-				'max': '<',
-				'showInfoDelay': '<',
-				'debounce': '<',
-				'allowKeynav': '<',
-				'ngBegin': '=',
-				'ngLimit': '='
-			}, link: function (scope, ngelt, attrs, ctrl) {
+			scope: scope,
+			link: function (scope, ngelt, attrs, ctrl) {
 				ctrl.horizontal = false;
-				link($timeout, $interval, $compile, boxesScrollServices, scope, ngelt, attrs, ctrl);
+				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl);
 			}
 		};
 	}
-	function BoxHscroll($timeout, $interval, $compile, boxesScrollServices) {
+	function BoxHscroll($timeout, $interval, $compile) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
 			controllerAs: 'ctrl',
-			scope: {
-				'total': '<',
-				'max': '<',
-				'showInfoDelay': '<',
-				'debounce': '<',
-				'allowKeynav': '<',
-				'ngBegin': '=',
-				'ngLimit': '='
-			}, link: function (scope, ngelt, attrs, ctrl) {
+			scope: scope,
+			link: function (scope, ngelt, attrs, ctrl) {
 				ctrl.horizontal = true;
-				link($timeout, $interval, $compile, boxesScrollServices, scope, ngelt, attrs, ctrl);
+				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl);
 			}
 		};
 	}
@@ -619,14 +616,12 @@
 	 * @param {type} $timeout
 	 * @param {type} $interval
 	 * @param {type} $compile
-	 * @param {type} boxesScrollServices
 	 * @param {type} scope
 	 * @param {type} ngelt
 	 * @param {type} attrs
 	 * @param {type} ctrl
-	 * @returns {undefined}
 	 */
-	function link($timeout, $interval, $compile, boxesScrollServices, scope, ngelt, attrs, ctrl) {
+	function link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl) {
 		ctrl.reItems = new RegExp("\s?limitTo\s?\:\s?" + attrs.ngLimit + "\s?\:\s?" + attrs.ngBegin + ""); // pour déterminer quel items sont gerer
 		scope.ngBegin = 0;
 		scope.ngLimit = 0;

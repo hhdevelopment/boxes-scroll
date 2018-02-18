@@ -8,7 +8,12 @@ import './boxesscroll.js';
 
 (function (ng, __) {
 	'use strict';
-	ng.module('app', ['boxes.scroll']).controller('AppCtrl', AppCtrl);
+	ng.module('app', ['boxes.scroll']).config(appConfig).controller('AppCtrl', AppCtrl);
+	/* @ngInject */
+	function appConfig($compileProvider) {
+		// disable debug info
+		$compileProvider.debugInfoEnabled(false);
+	}
 	function AppCtrl($rootScope, $http, $filter) {
 		var ctrl = this;
 		ctrl.selectCategory = selectCategory;
@@ -28,15 +33,15 @@ import './boxesscroll.js';
 			var count = root.$$watchers ? root.$$watchers.length : 0;
 			var pendingChildHeads = [root.$$childHead];
 			var currentScope;
-			while (pendingChildHeads.length)	{
+			while (pendingChildHeads.length) {
 				currentScope = pendingChildHeads.shift();
-				while (currentScope)	{
+				while (currentScope) {
 					count += currentScope.$$watchers ? currentScope.$$watchers.length : 0;
 					pendingChildHeads.push(currentScope.$$childHead);
 					currentScope = currentScope.$$nextSibling;
 				}
 			}
-			ctrl.nbWatchers =  count;
+			ctrl.nbWatchers = count;
 		}
 
 		function clearSearch() {
