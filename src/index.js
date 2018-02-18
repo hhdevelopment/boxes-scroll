@@ -15,7 +15,7 @@ import './boxesscroll.js';
 		ctrl.clearSearch = clearSearch;
 		ctrl.keydown = keydown;
 
-		ctrl.categories = [{'name': 'Family', nb: 5}, {'name': 'Works', nb: 2000}, {'name': 'Friends', nb: 20}, {'name': 'Blacklist', nb: 0}];
+		ctrl.categories = [{'name': 'All', nb: 10000}, {'name': 'Family', nb: 5}, {'name': 'Works', nb: 2000}, {'name': 'Friends', nb: 20}, {'name': 'Blacklist', nb: 0}];
 		ctrl.selectedCategory = null;
 		ctrl.items = null;
 		ctrl.height = 300;

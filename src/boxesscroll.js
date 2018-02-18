@@ -113,6 +113,7 @@
 				}, $scope.showInfoDelay || 1000, true, ctrl);
 			}
 		}
+		var init = true;
 		/**
 		 * Le nombre d'items a changé
 		 * On repositionne le grabber en 0
@@ -130,12 +131,15 @@
 				updateGrabberSizes();
 			}
 			$scope.ngLimit = $scope.max || 1;
+			init = true;
 		}
 		/**
 		 * La limit a ete mis a jour
 		 */
 		function updateLimit() {
-			if ($scope.ngLimit === 1) {
+			if (init) {
+				init = false;
+				added = false;
 				initLimit();
 			} else {
 				adjustLimit();
@@ -340,9 +344,9 @@
 			var result = false;
 			if (document.elementFromPoint(m.x, m.y) === ctrl.elt) {
 				if (ctrl.horizontal) {
-					result = m.y >= getTriggerArea().y; // on est au dessus de la scrollbar trigger
+					result = m.y >= getTriggerArea().top; // on est au dessus de la scrollbar trigger
 				} else {
-					result = m.x >= getTriggerArea().x; // on est au dessus de la scrollbar trigger
+					result = m.x >= getTriggerArea().left; // on est au dessus de la scrollbar trigger
 				}
 			}
 			return result;
@@ -355,12 +359,12 @@
 		function isGrabberOver(m) {
 			var result = false;
 			if (ctrl.horizontal) {
-				var start = getScrollbarArea().x + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+				var start = getScrollbarArea().left + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
 				var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
 				result = m.x >= start && m.x <= end;
 			} else {
 				if (isScrollbarOver(m)) {
-					var start = getScrollbarArea().y + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+					var start = getScrollbarArea().top + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
 					var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
 					result = m.y >= start && m.y <= end;
 				}
@@ -370,18 +374,17 @@
 		function getOffsetMouseFromGrabber(m) {
 			if (ctrl.horizontal) {
 				var result = 0;
-				var start = getTriggerArea().x + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+				var start = getTriggerArea().left + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
 				result = m.x - start;
 			} else {
 				var result = 0;
-				var start = getTriggerArea().y + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+				var start = getTriggerArea().top + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
 				result = m.y - start;
 			}
 			return result;
 		}
 		var added = false;
 		function initLimit() {
-			added = false;
 			var items = getItems();
 			if (items.length) {
 				var rect = getArea(items[items.length - 1]);
@@ -396,13 +399,24 @@
 				}
 			}
 		}
+		var canvas;
 		function adjustLimit() {
 			if ($scope.max) {
 				$scope.ngLimit = $scope.max;
 			} else if ($scope.total) {
 				var element;
 				if (ctrl.horizontal) {
+					if(!canvas) {
+						canvas = document.createElement("canvas");
+						canvas.setAttribute("width", window.innerWidth);
+						canvas.setAttribute("height", window.innerHeight);
+						canvas.setAttribute("style", "position: fixed; top:0px; left:0px;");
+//						document.body.appendChild(canvas);
+						var ctx = canvas.getContext("2d");
+						ctx.fillRect( getEltArea().right -12,  getEltArea().top +2, 10, 10);
+					}
 					element = document.elementFromPoint(getEltArea().right - 1, getEltArea().top + 1);
+					console.log("ELEMENT", element, ctrl.elt.contains(element), added);
 				} else {
 					element = document.elementFromPoint(getEltArea().left + 1, getEltArea().bottom - 1);
 				}
@@ -540,7 +554,6 @@
 						var m = bgSize.match(/\D*\d+\D*(\d+)\D*/);
 						var s = m.length > 0 ? parseInt(m[1]) : 4;
 						return {
-							x: rect.left, y: rect.bottom - s,
 							left: rect.left, right: rect.right,
 							width: rect.width, height: s,
 							top: rect.bottom - s, bottom: rect.bottom
@@ -549,7 +562,6 @@
 						var m = bgSize.match(/\D*(\d+)\D*\d+\D*/);
 						var s = m.length > 0 ? parseInt(m[1]) : 4;
 						return {
-							x: rect.right - s, y: rect.top,
 							left: rect.right - s, right: rect.right,
 							width: s, height: rect.height,
 							top: rect.top, bottom: rect.bottom
@@ -593,7 +605,7 @@
 		 * @return {Rectangle}
 		 */
 		function getNullArea() {
-			return {x: 0, y: 0, left: 0, right: 0, width: 0, height: 0, top: 0, bottom: 0};
+			return {left: 0, right: 0, width: 0, height: 0, top: 0, bottom: 0};
 		}
 	}
 	/**
@@ -627,9 +639,9 @@
 		ngelt.append(info);
 		ngelt.append(ctrl.ngsb);
 		ctrl.sb = getHtmlElement(ctrl.ngsb);
-		if (ctrl.ngelt.css('position') === 'static') { // repositionne le badge d'info
-			ctrl.ngelt.css('position', 'inherit');
-		}
+//		if (ctrl.ngelt.css('position') === 'static') { // repositionne le badge d'info
+//			ctrl.ngelt.css('position', 'inherit');
+//		}
 		var watcherClears = [];
 		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display 
 			var previous = {value: 'none'};

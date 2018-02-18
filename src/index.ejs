@@ -30,16 +30,15 @@
 								<span class="sr-only">Toggle Dropdown</span>
 							</button>
 							<ul class="dropdown-menu" box-vscroll show-info-delay="2000"  allow-keynav="true"
-								 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" max="8">
+								 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" max="7">
 								<li ng-repeat="item in ctrl.items| limitTo:limit1:begin1">
 									<a href ng-bind="item.lastname"></a>
 								</li>
 							</ul>
 						</div>
 					</div>
-					<box-hscroll  show-info-delay="2000" total="ctrl.items.length" 
-									  ng-begin="begin2" ng-limit="limit2" size="300" tag-items="div"
-									  style="border:solid 1px black;height: 72px;padding-top: 16px">
+					<box-hscroll  show-info-delay="2000" total="ctrl.items.length" ng-begin="begin2" ng-limit="limit2"
+									  style="border:solid 1px black;height: 52px;padding-top: 16px">
 						<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: initial">
 							<span class="glyphicon glyphicon-user"></span>
 							<span ng-bind="item.lastname"></span>
