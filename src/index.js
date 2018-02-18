@@ -8,13 +8,13 @@ import './boxesscroll.js';
 
 (function (ng, __) {
 	'use strict';
-	ng.module('app', ['boxes.scroll']).config(appConfig).controller('AppCtrl', AppCtrl);
+	ng.module('app', ['boxes.scroll']).config(appConfig).controller('AppController', AppController);
 	/* @ngInject */
 	function appConfig($compileProvider) {
 		// disable debug info
-		$compileProvider.debugInfoEnabled(false);
+//		$compileProvider.debugInfoEnabled(false);
 	}
-	function AppCtrl($rootScope, $http, $filter) {
+	function AppController($rootScope, $http, $filter) {
 		var ctrl = this;
 		ctrl.selectCategory = selectCategory;
 		ctrl.clearSearch = clearSearch;
