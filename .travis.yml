@@ -18,8 +18,7 @@ script:
   - webpack
 deploy:
   - provider: script
-    script: git checkout master; gulp; webpack
-    skip_cleanup: true
+    script: git checkout master; gulp; webpack; ls
     on:
       branch: master
   - provider: script
