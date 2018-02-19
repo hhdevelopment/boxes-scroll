@@ -14,13 +14,11 @@ before_script:
   - git config user.name "$GITHUB_USER"
   - npm install -g gulp-cli
 script: 
+  - git checkout master
   - gulp
   - webpack
+  - ls
 deploy:
-  - provider: script
-    script: git checkout master; gulp; webpack; ls
-    on:
-      branch: master
   - provider: script
     script: npm version patch -m "[ci skip]"
     skip_cleanup: true
