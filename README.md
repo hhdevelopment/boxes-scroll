@@ -1,4 +1,4 @@
-**boxes-scroll**   
+**boxes-scroll : synchronize ng-repeat with scrollbar**   
 
 [![Build Status](https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master)](https://travis-ci.org/hhdevelopment/boxes-scroll)
 
@@ -13,6 +13,18 @@ Those directeives limit the number of watchers and improve performance of your a
 More it is really usefull, if you want to scroll in a table but your users want to see the headers fixed.
 
 Set size of your table in pixel on box, or set the maximun items that you want and box-scroll compute pertinent limit and manage begin variable.
+
+## Comparaison
+
+| features/impls    	| box-vscroll                                                                                                      	| html table with overflow container                                                                                            	|   
+|------------------	|------------------------------------------------------------------------------------------------------------------	|-------------------------------------------------------------------------------------------------------------------------------	|   
+| watchers         	| + limit watchers about visible rows                                                                              	| - each row increase watchers, visible or not                                                                                  	|   
+| faster           	| + ng-repeat draws only visible rows, try demo with 2000 or 10000 item, and check/uncheck 'try without directive' 	| + ng-repeat draws all rows, try demo with 2000 or 10000 item, and check/uncheck 'try without directive'                       	|   
+| headers          	| + headers are always visible                                                                                     	| - headers go away when scroll                                                                                                 	|   
+| scrollbar        	| + scrollbar is collapsible, scrollbar indicator get only 4px                                                     	| - depends to browsers, but scrollbar get minimum 16px                                                                         	|   
+| cells size       	| + cells size depends only of data visible. It's more efficient                                                   	| - cells size depends of data in all rows.    So if one cell contains too large text, all cells in the same column is changed. 	|   
+| scroll indicator 	| + has scroll indicator                                                                                           	| - has not                                                                                                                     	|   
+|                  	|                                                                                                                  	|                                                                                                                               	|   
 
 ![Screenshot1](screenshot1.png)
 
@@ -104,3 +116,9 @@ If you don't set height or max-height you have to set the max attribute.
 6. debounce (number) (optional) : Set the delay before compute ng-limit. Default value 300 ms
 7. max (number) (optional) : Define the maximun of number items rendered
 
+## Soon features
+
+Choose position of scrollbars, 
+ 
+- box-vscroll : left, right(default), both   
+- box-hscroll : top, bottom(default), both   
