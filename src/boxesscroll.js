@@ -116,7 +116,6 @@
 		 */
 		function updateTotal() {
 			$scope.ngBegin = 0;
-			moveGrabber(0);
 			if (!$scope.total) {
 				updateGrabberSizes();
 				return;
@@ -133,7 +132,7 @@
 		function updateLimit() {
 			if (init) {
 				init = false;
-				added = false;
+				added = 0;
 				initLimit();
 			} else {
 				adjustLimit();
@@ -146,6 +145,8 @@
 		 */
 		function updateBegin() {
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+			added = 0;
+			adjustLimit();
 		}
 		/**
 		 * La fenetre a ete redimentionn�
@@ -414,7 +415,7 @@
 			}
 			return result;
 		}
-		var added = false;
+		var added = 0;
 		function initLimit() {
 			var items = getItems();
 			if (items.length) {
@@ -434,32 +435,20 @@
 			if ($scope.max) {
 				$scope.ngLimit = $scope.max;
 			} else if ($scope.total) {
-				var element;
-				if (ctrl.horizontal) {
-					element = document.elementFromPoint(getEltArea().right - 1, getEltArea().top + 1);
-				} else {
-					element = document.elementFromPoint(getEltArea().left + 1, getEltArea().bottom - 1);
-				}
-				if (!element) {
-					return;
-				}
-				// on teste si l'element est enfant du composant
-				if (element !== ctrl.elt && ctrl.elt.contains(element)) { // item en bas du tableau
-					$scope.ngLimit = Math.max($scope.ngLimit - 1, 0); // negatif pas possible
-				} else if (!added) { // pas d'item et on n'en a pas encore ajouté
-					added = true;
-					var items = getItems(); // il y en a au moins un
-					if (items.length) {
-						var size = 0;
-						var empty = 0;
-						size = [].reduce.call(items, function (accu, item) {
-							var h = ctrl.horizontal ? getArea(item).width : getArea(item).height;
-							return accu + h;
-						}, 0);
-						empty = getHeightArea() - size;
-						var average = size / items.length;
-						var inc = Math.floor(empty / average);
-						$scope.ngLimit += inc;
+				var items = getItems(); // il y en a au moins un
+				if (items.length) {
+					var size = 0;
+					var empty = 0;
+					size = [].reduce.call(items, function (accu, item) {
+						var h = ctrl.horizontal ? getArea(item).width : getArea(item).height;
+						return accu + h;
+					}, 0);
+					empty = getHeightArea() - size;
+					var average = size / items.length;
+					var inc = Math.floor(empty / average);
+					if (inc < 0 || Math.abs(inc) !== 1 || inc !== -added) {
+						$scope.ngLimit = Math.max($scope.ngLimit + inc, 0);
+						added = inc;
 					}
 				}
 			}
