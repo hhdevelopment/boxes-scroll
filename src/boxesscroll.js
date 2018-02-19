@@ -65,9 +65,6 @@
 			ctrl.elt.addEventListener("wheel", function (event) {
 				boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
 			}, {passive: true});
-			ctrl.ngsb.on("click", function (event) {
-				boxesScrollServices.execAndApplyIfScrollable($scope, this, click, [event]);
-			});
 			ctrl.ngsb.on("mouseout", function (event) {
 				if (!isDragMode()) {
 					hideScrollbar(SHOWSB_TIMEOUT);
@@ -184,7 +181,7 @@
 			if (isScrollbarVisible()) {
 				if (isScrollbarOver(m)) { // la souris est au dessus de la scrollbar
 					showScrollbar();
-					if (isGrabberOver(m)) { // la souris est au dessus du curseur
+					if (compareGrabberAndMousePosition(m) === 0) { // la souris est au dessus du curseur
 						showScrollbar('hover');
 					}
 				} else {
@@ -236,12 +233,19 @@
 		var offsetMouse;
 		function mousedown(event) {
 			var m = boxesScrollServices.getMousePosition(event);
-			if (isGrabberOver(m)) { // on a click sur le curseur
-				boxesScrollServices.stopEvent(event);
-				offsetMouse = getOffsetMouseFromGrabber(m);
-				showScrollbar('drag');
-				document.addEventListener('mousemove', dragHandler, false);
-				document.addEventListener("mouseup", endDrag, false);
+			boxesScrollServices.stopEvent(event);
+			var pos = compareGrabberAndMousePosition(m);
+			if (!isNaN(pos)) {
+				if (pos === 0) { // on a click sur le curseur passage en mode drag
+					offsetMouse = getOffsetMouseFromGrabber(m);
+					showScrollbar('drag');
+					document.addEventListener('mousemove', dragHandler, false);
+					document.addEventListener("mouseup", endDrag, false);
+				} else {
+					$scope.ngBegin = $scope.ngBegin + ($scope.ngLimit * pos); // next or previous page
+//				var percent = getGrabberOffsetPercentFromMousePosition(m, getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues()) / 2);
+//				$scope.ngBegin = getBeginFromPercent(percent);
+				}
 			}
 		}
 		function endDrag(event) {
@@ -259,19 +263,11 @@
 				$scope.ngBegin = begin;
 			}
 		}
-		function click(event) {
-			boxesScrollServices.stopEvent(event);
-			var m = boxesScrollServices.getMousePosition(event);
-			if (!isGrabberOver(m)) { // on n'a pas clické dans le grabber
-				var percent = getGrabberOffsetPercentFromMousePosition(m, getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues()) / 2);
-				$scope.ngBegin = getBeginFromPercent(percent);
-			}
-		}
 		var wheelData = {timer: null, begin: null};
 		function wheel(event) {
 			hideScrollbar();
 			wheelData.begin = manageWheelHandler(event, wheelData.begin || $scope.ngBegin);
-			moveGrabber(getGrabberOffsetPercentFromBegin(wheelData.begin));
+//			moveGrabber(getGrabberOffsetPercentFromBegin(wheelData.begin));
 //			if (!wheelData.timer) {
 //				$scope.ngBegin = wheelData.begin;
 //				wheelData.timer = $timeout(function (scope, data) {
@@ -319,18 +315,18 @@
 		}
 		var modeTimer;
 		function hideScrollbar(defer) {
-			if (ctrl.ngsb.attr('mode') === 'hidden')
-				return;
-			if (modeTimer) {
-				$timeout.cancel(modeTimer);
-			}
-			if (defer) {
-				ctrl.ngsb.attr('mode', null);
-				modeTimer = $timeout(function () {
+			if (isScrollbarVisible()) {
+				if (modeTimer) {
+					$timeout.cancel(modeTimer);
+				}
+				if (defer) {
+					ctrl.ngsb.attr('mode', null);
+					modeTimer = $timeout(function () {
+						ctrl.ngsb.attr('mode', 'hidden');
+					}, defer);
+				} else {
 					ctrl.ngsb.attr('mode', 'hidden');
-				}, defer);
-			} else {
-				ctrl.ngsb.attr('mode', 'hidden');
+				}
 			}
 		}
 		/**
@@ -364,18 +360,47 @@
 		 */
 		function isGrabberOver(m) {
 			var result = false;
-			if (ctrl.horizontal) {
-				var start = getScrollbarArea().left + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-				var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
-				result = m.x >= start && m.x <= end;
-			} else {
-				if (isScrollbarOver(m)) {
+			if (isScrollbarOver(m)) {
+				if (ctrl.horizontal) {
+					var start = getScrollbarArea().left + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+					var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
+					result = m.x >= start && m.x <= end;
+				} else {
 					var start = getScrollbarArea().top + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
 					var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
 					result = m.y >= start && m.y <= end;
 				}
 			}
 			return result;
+		}
+		/**
+		 * La souris est elle avant le grabber (-1), apres le grabber (1) sur le grabber (0), pas au dessus NaN
+		 * @param {type} m
+		 * @returns {Number}
+		 */
+		function compareGrabberAndMousePosition(m) {
+			if (isScrollbarOver(m)) {
+				if (ctrl.horizontal) {
+					var start = getScrollbarArea().left + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+					if (m.x < start)
+						return -1;
+					var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
+					if (m.x > end)
+						return 1;
+					if (m.x >= start && m.x <= end)
+						return 0;
+				} else {
+					var start = getScrollbarArea().top + getGrabberOffsetPixelFromPercent(getGrabberOffsetPercentFromBegin($scope.ngBegin));
+					if (m.y < start)
+						return -1;
+					var end = start + getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
+					if (m.y > end)
+						return 1;
+					if (m.y >= start && m.y <= end)
+						return 0;
+				}
+			}
+			return NaN();
 		}
 		function getOffsetMouseFromGrabber(m) {
 			if (ctrl.horizontal) {
