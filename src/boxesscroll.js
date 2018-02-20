@@ -252,20 +252,16 @@
 				} else {
 					$scope.ngBegin = $scope.ngBegin + ($scope.ngLimit * pos); // next or previous page
 					downData.scope = $scope;
-					downData.inc = pos;
+					downData.inc = pos; // vaut 1 ou -1
 					downData.end = getBeginFromPercent(getGrabberOffsetPercentFromMousePosition(m, 0));
+					if (pos < 0) {
+						downData.end -= $scope.ngLimit;
+					}
 					downData.timer = $interval(function (data) {
 						var next = data.scope.ngBegin + (data.scope.ngLimit * data.inc); // next or previous page;
-						if (data.inc > 0) {
-							if (next > data.end) {
-								$interval.cancel(data.timer);
-								return;
-							}
-						} else {
-							if (next + data.scope.ngLimit < data.end) {
-								$interval.cancel(data.timer);
-								return;
-							}
+						if(next * data.inc > data.end * data.inc) {
+							$interval.cancel(data.timer);
+							return;
 						}
 						data.scope.ngBegin = next;
 					}, 300, 0, true, downData);
