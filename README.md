@@ -113,7 +113,7 @@ If you don't set height or max-height you have to set the max attribute.
 3. ng-limit : the limit of window for directive limitTo. This value is managed by the directive, don't set it, just name it, in controller or scope
 4. ng-begin : the begin of window  for directive limitTo. This value is managed by the directive, don't set it, just name it, in controller or scope
 5. show-info-delay (number) (optional) : define the delay of time the infos about the window appears. Default value 1000 ms
-6. debounce (number) (optional) : Set the delay before compute ng-limit. Default value 300 ms
+6. debounce (number) (optional) : Set the delay before compute ng-limit. Default value 100 ms
 7. max (number) (optional) : Define the maximun of number items rendered
 
 ## Soon features
