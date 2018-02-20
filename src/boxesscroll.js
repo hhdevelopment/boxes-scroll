@@ -42,7 +42,7 @@
 			}
 		};
 	}
-	function BoxScrollCtrl($window, $document, $timeout, $scope, boxesScrollServices) {
+	function BoxScrollCtrl($window, $document, $interval, $timeout, $scope, boxesScrollServices) {
 		var ctrl = this;
 		ctrl.reItems;
 		ctrl.ngelt; // le composant lui meme
@@ -62,9 +62,12 @@
 		 */
 		function addEventListeners() {
 			var hasFocus = false;
-			ctrl.elt.addEventListener("wheel", function (event) {
+			ctrl.ngelt.on('wheel', null, {ctrl: ctrl}, function (event) {
 				boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
-			}, {passive: true});
+			});
+//			ctrl.elt.addEventListener("wheel", function (event) {
+//				boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
+//			}, {passive: true, capture: true});
 			ctrl.ngsb.on("mouseout", function (event) {
 				if (!isDragMode()) {
 					hideScrollbar(SHOWSB_TIMEOUT);
@@ -73,6 +76,9 @@
 			ctrl.ngsb.on("mousedown", function (event) { // sur le mousedown, si dans le grabber, on init le mode drag
 				hasFocus = true;
 				boxesScrollServices.execAndApplyIfScrollable($scope, this, mousedown, [event]);
+			});
+			ctrl.ngsb.on("mouseup", function (event) { // sur le mousedown, si dans le grabber, on init le mode drag
+				mouseup();
 			});
 			ctrl.ngelt.on("mousemove", function (event) { // on définit la couleur du grabber
 				boxesScrollServices.execAndApplyIfScrollable($scope, this, mousemove, [event]);
@@ -231,12 +237,13 @@
 				manageScrollbarRender(event);
 			}
 		}
+		var downData = {timer: null, scope: null, inc: 0, end: 0};
 		var offsetMouse;
 		function mousedown(event) {
 			var m = boxesScrollServices.getMousePosition(event);
 			boxesScrollServices.stopEvent(event);
 			var pos = compareGrabberAndMousePosition(m);
-			if (!isNaN(pos)) {
+			if (!isNaN(pos)) { // dans la scrollbar
 				if (pos === 0) { // on a click sur le curseur passage en mode drag
 					offsetMouse = getOffsetMouseFromGrabber(m);
 					showScrollbar('drag');
@@ -244,9 +251,30 @@
 					document.addEventListener("mouseup", endDrag, false);
 				} else {
 					$scope.ngBegin = $scope.ngBegin + ($scope.ngLimit * pos); // next or previous page
-//				var percent = getGrabberOffsetPercentFromMousePosition(m, getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues()) / 2);
-//				$scope.ngBegin = getBeginFromPercent(percent);
+					downData.scope = $scope;
+					downData.inc = pos;
+					downData.end = getBeginFromPercent(getGrabberOffsetPercentFromMousePosition(m, 0));
+					downData.timer = $interval(function (data) {
+						var next = data.scope.ngBegin + (data.scope.ngLimit * data.inc); // next or previous page;
+						if (data.inc > 0) {
+							if (next > data.end) {
+								$interval.cancel(data.timer);
+								return;
+							}
+						} else {
+							if (next + data.scope.ngLimit < data.end) {
+								$interval.cancel(data.timer);
+								return;
+							}
+						}
+						data.scope.ngBegin = next;
+					}, 300, 0, true, downData);
 				}
+			}
+		}
+		function mouseup(event) {
+			if (downData.timer) {
+				$interval.cancel(downData.timer);
 			}
 		}
 		function endDrag(event) {
@@ -266,6 +294,7 @@
 		}
 		var wheelData = {timer: null, begin: null};
 		function wheel(event) {
+			boxesScrollServices.stopEvent(event);
 			hideScrollbar();
 			wheelData.begin = manageWheelHandler(event, wheelData.begin || $scope.ngBegin);
 //			moveGrabber(getGrabberOffsetPercentFromBegin(wheelData.begin));
@@ -446,9 +475,13 @@
 					empty = getHeightArea() - size;
 					var average = size / items.length;
 					var inc = Math.floor(empty / average);
+					// on peut toujours décrémenter, ou add/del plus de 1, et si on vient pas de faire l'inverse
 					if (inc < 0 || Math.abs(inc) !== 1 || inc !== -added) {
-						$scope.ngLimit = Math.max($scope.ngLimit + inc, 0);
-						added = inc;
+						// on peut pas en rajouter car on voit les derniers
+						if (inc < 0 || $scope.ngBegin + $scope.ngLimit < $scope.total) {
+							$scope.ngLimit = Math.max($scope.ngLimit + inc, 0);
+							added = inc;
+						}
 					}
 				}
 			}
