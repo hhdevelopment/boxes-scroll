@@ -1,4 +1,4 @@
-**boxes-scroll : synchronize ng-repeat with scrollbar**   
+# BOXES-SCROLL : synchronize ng-repeat with scrollbar
 
 [![Build Status](https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master)](https://travis-ci.org/hhdevelopment/boxes-scroll)
 
