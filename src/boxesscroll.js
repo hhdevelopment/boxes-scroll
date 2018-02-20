@@ -14,8 +14,7 @@
 		'allowKeynav': '<',
 		'ngBegin': '=',
 		'ngLimit': '='//,
-//		'paddingBefore':'<',
-//		'paddingAfter':'<'
+//		'position':'<' // reverse ou both
 	};
 	/* @ngInject */
 	function BoxVscroll($timeout, $interval, $compile) {
