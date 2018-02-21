@@ -132,24 +132,24 @@
 		function updateTotal() {
 			$scope.ngBegin = 0;
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-			adjustLimit();
 			updateGrabberSizes();
+			adjustLimit();
 		}
 		/**
 		 * La limit a ete mis a jour
 		 */
 		function updateLimit() {
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-			adjustLimit();
 			updateGrabberSizes();
+			adjustLimit();
 		}
 		/**
 		 * begin a ete mis a jour
 		 */
 		function updateBegin() {
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-			adjustLimit();
 			updateGrabberSizes();
+			adjustLimit();
 		}
 		/**
 		 * La fenetre a ete redimentionn�
@@ -434,11 +434,14 @@
 					}, 0);
 					var offset = getOffsetPixelContainerBeforeItem(items[0]); // on ignore les éléments avant
 					empty = getHeightArea() - offset - size;
+					var inc = 0;
 					var average = size / items.length;
-					var floatValue = empty / average;
-					var inc = floatValue < 0 ? Math.floor(floatValue) : Math.ceil(floatValue); // on veut en voir une de plus
-					if (inc === floatValue) { // on tombe pile poil, on rajoute un, pour tjs avoir un de plus
-						inc++;
+					if(average) { // protect div par 0
+						var floatValue = empty / average;
+						inc = floatValue < 0 ? Math.ceil(floatValue) : Math.ceil(floatValue); // on veut en voir une de plus
+						if (inc === floatValue) { // on tombe pile poil, on rajoute un, pour tjs avoir un de plus
+							inc++;
+						}
 					}
 					var max = $scope.total - $scope.ngBegin;
 					if (inc !== -1) { // si un depasse on laisse
@@ -526,7 +529,7 @@
 		 */
 		function getGrabberSizePercentFromScopeValues() {
 			if ($scope.total) {
-				return Math.min((($scope.max || getInnerLimit($scope)) / $scope.total) * 100, 100);
+				return Math.min((($scope.max || $scope.ngLimit) / $scope.total) * 100, 100);
 			}
 			return 100;
 		}
@@ -747,7 +750,7 @@
 		 * @returns {undefined}
 		 */
 		function execAndApplyIfScrollable(scope, obj, func, data) {
-			if (scope.ngLimit < scope.total) {
+			if (getInnerLimit(scope) < scope.total) {
 				scope.$apply(function () {
 					func.apply(obj, data);
 				});
