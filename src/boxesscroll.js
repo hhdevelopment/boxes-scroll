@@ -258,7 +258,7 @@
 					}
 					downData.timer = $interval(function (data) {
 						var next = data.scope.ngBegin + (data.scope.ngLimit * data.inc); // next or previous page;
-						if(next * data.inc > data.end * data.inc) {
+						if (next * data.inc > data.end * data.inc) {
 							$interval.cancel(data.timer);
 							return;
 						}
@@ -444,13 +444,14 @@
 			var items = getItems();
 			if (items.length) {
 				var rect = getArea(items[items.length - 1]);
+				var max = $scope.total - $scope.ngBegin;
 				if (ctrl.horizontal) {
 					if (rect && rect.width) {
-						$scope.ngLimit = $scope.max || Math.round(getHeightArea() / rect.width);
+						$scope.ngLimit = $scope.max || boxesScrollServices.minXmax(0, Math.round(getHeightArea() / rect.width), max);
 					}
 				} else {
 					if (rect && rect.height) {
-						$scope.ngLimit = $scope.max || Math.round(getHeightArea() / rect.height);
+						$scope.ngLimit = $scope.max || boxesScrollServices.minXmax(0, Math.round(getHeightArea() / rect.height), max);
 					}
 				}
 			}
@@ -469,12 +470,16 @@
 					}, 0);
 					empty = getHeightArea() - size;
 					var average = size / items.length;
-					var inc = Math.floor(empty / average);
+					var inc = Math.ceil(empty / average); // on veut en voir une de plus
+					if ($scope.ngBegin + $scope.ngLimit + inc >= $scope.total) { // sauf si on voit le dernier element
+						inc = Math.floor(empty / average);
+					}
 					// on peut toujours décrémenter, ou add/del plus de 1, et si on vient pas de faire l'inverse
 					if (inc < 0 || Math.abs(inc) !== 1 || inc !== -added) {
 						// on peut pas en rajouter car on voit les derniers
-						if (inc < 0 || $scope.ngBegin + $scope.ngLimit < $scope.total) {
-							$scope.ngLimit = Math.max($scope.ngLimit + inc, 0);
+						var newLimit = boxesScrollServices.minXmax(0, $scope.ngLimit + inc, $scope.total - $scope.ngBegin);
+						if(newLimit !== $scope.ngLimit) {
+							$scope.ngLimit = boxesScrollServices.minXmax(0, $scope.ngLimit + inc, $scope.total - $scope.ngBegin);
 							added = inc;
 						}
 					}
