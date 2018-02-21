@@ -38,10 +38,10 @@
 						</div>
 					</div>
 					<box-hscroll  show-info-delay="2000" total="ctrl.items.length" ng-begin="begin2" ng-limit="limit2"
-									  style="border:solid 1px black;height: 55px;padding-top: 16px">
-						<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: initial">
-							<span class="glyphicon glyphicon-user"></span>
-							<span ng-bind="item.lastname"></span>
+									  style="border:solid 1px black;height: 57px;">
+						<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: table-cell">
+							<span style="display: table-cell" class="glyphicon glyphicon-user"></span>
+							<span style="display: table-cell" ng-bind="item.lastname"></span>
 						</div>
 					</box-hscroll>
 				</div>
