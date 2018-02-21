@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-xs-3">
 					<div class="list-group">
-						<a href="#" class="list-group-item" ng-repeat="cat in ctrl.categories| limitTo:limit0:begin0" 
+						<a href="#" class="list-group-item" ng-repeat="cat in ctrl.categories" 
 							ng-click="ctrl.selectCategory(cat)"
 							ng-class="{active:ctrl.selectedCategory === cat}">
 							<span class="glyphicon glyphicon-folder-close" ng-class="{'glyphicon-folder-open':ctrl.selectedCategory === cat}"></span>&nbsp;&nbsp;
@@ -20,32 +20,19 @@
 							<span class="badge" ng-bind="cat.nb"></span>
 						</a>
 					</div>			
-					<div class="form-group">
-						<div class="btn-group">
-							<button type="button" class="btn">By names ({{limit1}} max)</button>
-							<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" 
-									  ng-keydown="begin1 = begin1 + ctrl.keydown($event, limit1)"
-									  aria-haspopup="true" aria-expanded="false">
-								<span class="caret"></span>
-								<span class="sr-only">Toggle Dropdown</span>
-							</button>
-							<ul class="dropdown-menu" box-vscroll show-info-delay="2000"  allow-keynav="true"
-								 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" max="7">
-								<li ng-repeat="item in ctrl.items| limitTo:limit1:begin1">
-									<a href ng-bind="item.lastname"></a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<box-hscroll  show-info-delay="2000" total="ctrl.items.length" ng-begin="begin2" ng-limit="limit2"
-									  style="border:solid 1px black;height: 57px;">
-						<div ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" style="display: table-cell">
-							<span style="display: table-cell" class="glyphicon glyphicon-user"></span>
-							<span style="display: table-cell" ng-bind="item.lastname"></span>
-						</div>
-					</box-hscroll>
 				</div>
 				<div class="col-xs-9">
+					<div class="form-group">
+						<box-hscroll  show-info-delay="2000" total="ctrl.items.length" ng-begin="begin2" ng-limit="limit2"
+										  style="border:solid 1px black;height: 57px;">
+							<a role="button" ng-repeat="item in ctrl.items| limitTo:limit2:begin2" class="alert alert-info" 
+								ng-click="ctrl.search(item.lastname)"
+								style="display: table-cell">
+								<span style="display: table-cell" class="glyphicon glyphicon-user"></span>
+								<span style="display: table-cell" ng-bind="item.lastname"></span>
+							</a>
+						</box-hscroll>
+					</div>
 					<div class="form-group">
 						<div class="row">
 							<div class="col-xs-2">
@@ -56,21 +43,41 @@
 							</div>
 							<div class="col-xs-4">
 								<div class="input-group">
-									<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-									<input type="text" class="form-control" placeholder="Search" ng-model="ctrl.search">
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-search"></span>
+									</span>
+									<input type="text" class="form-control" placeholder="Search" ng-model="ctrl.key" ng-keyup="ctrl.search(ctrl.key)">
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="ctrl.clearSearch();">
+										<button class="btn btn-default" type="button" ng-click="ctrl.search(null);">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
+										<span class="btn-group">
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+													  ng-keydown="begin1 = begin1 + ctrl.keydown($event, limit1)"
+													  title="popup with max = 7"
+													  aria-haspopup="true" aria-expanded="false">
+												<span class="caret"></span>
+												<span class="sr-only">Toggle Dropdown</span>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-right" box-vscroll show-info-delay="2000"  allow-keynav="true"
+												 total="ctrl.items.length" ng-begin="begin1" ng-limit="limit1" max="7">
+												<li ng-repeat="item in ctrl.items| limitTo:limit1:begin1" ng-click="ctrl.search(item.lastname)">
+													<a href>
+														<span class="glyphicon glyphicon-user"></span>
+														<span ng-bind="item.lastname"></span>
+													</a>
+												</li>
+											</ul>
+										</span>
 									</span>
 								</div>
 							</div>
 							<div class="col-xs-3">
-								<div class="input-group">
+								<div class="input-group" title="Try without the directive with 2000 or 10000 element">
 									<span class="input-group-addon">
-										<input type="checkbox" ng-model="withoutDirective">
+										<input type="checkbox" ng-model="withoutDirective" ng-change="ctrl.switchMode();">
 									</span>
-									<input type="text" class="form-control" placeholder="Try without directive" readonly="">
+									<input type="text" class="form-control" placeholder="Native scroll for table" readonly="">
 								</div>
 							</div>
 							<div class="col-xs-3">
@@ -81,11 +88,10 @@
 							</div>
 						</div>
 					</div>
-
 					<div  ng-if="!withoutDirective">
-						<box-vscroll show-info-delay="2000" total="filteredItems.length" allow-keynav="true"
-										 ng-begin="begin3" ng-limit="limit3"
-										 style="height: {{ctrl.height}}px; border:solid 1px black;">
+						<box-vscroll show-info-delay="2000" total="ctrl.filteredItems.length" allow-keynav="true"
+										 ng-begin="begin3" ng-limit="limit3" ng-style="{'height':ctrl.height+'px'}"
+										 style="border:solid 1px black;">
 							<table class="table table-hover table-striped">
 								<thead>
 									<tr>
@@ -98,7 +104,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="item in filteredItems = (ctrl.items| filter:ctrl.search) |limitTo:limit3:begin3">
+									<tr ng-repeat="item in ctrl.filteredItems|limitTo:limit3:begin3">
 										<td><span class="glyphicon glyphicon-user"></span></td>
 										<td ng-bind="item.lastname"></td>
 										<td ng-bind="item.firstname"></td>
@@ -116,6 +122,11 @@
 										<span>Pilot scrolling : </span>
 									</a>
 								</li>
+								<li ng-click="begin3 = begin3 - (limit3 - 1);">
+									<a href>
+										<span class="glyphicon glyphicon-backward"></span>
+									</a>
+								</li>
 								<li ng-click="begin3 = begin3 - 1;">
 									<a href>
 										<span class="glyphicon glyphicon-chevron-left"></span>
@@ -129,6 +140,11 @@
 								<li ng-click="begin3 = begin3 + 1;">
 									<a href>
 										<span class="glyphicon glyphicon-chevron-right"></span>
+									</a>
+								</li>
+								<li ng-click="begin3 = begin3 + (limit3 - 1);">
+									<a href>
+										<span class="glyphicon glyphicon-forward"></span>
 									</a>
 								</li>
 							</ul>
@@ -148,7 +164,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="item in filteredItems = (ctrl.items| filter:ctrl.search)">
+									<tr ng-repeat="item in ctrl.filteredItems">
 										<td><span class="glyphicon glyphicon-user"></span></td>
 										<td ng-bind="item.lastname"></td>
 										<td ng-bind="item.firstname"></td>
