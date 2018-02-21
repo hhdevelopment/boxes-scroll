@@ -18,17 +18,39 @@ import './boxesscroll.js';
 	function AppController($rootScope, $http, $filter) {
 		var ctrl = this;
 		ctrl.selectCategory = selectCategory;
-		ctrl.clearSearch = clearSearch;
+		ctrl.search = search;
 		ctrl.keydown = keydown;
 		ctrl.countWatchers = countWatchers;
+		ctrl.switchMode = switchMode;
 
-		ctrl.categories = [{'name': 'All', nb: 10000}, {'name': 'Family', nb: 5}, {'name': 'Works', nb: 2000}, {'name': 'Friends', nb: 20}, {'name': 'Blacklist', nb: 0}];
+		ctrl.categories = [
+			{'name': 'All', nb: 10000, skip:0}, 
+			{'name': 'Unclassified', nb: 200, skip:200}, 
+			{'name': 'Family', nb: 5, skip:5}, 
+			{'name': 'Works', nb: 2000, skip:2000}, 
+			{'name': 'Friends', nb: 20, skip:20}, 
+			{'name': 'Others', nb: 3, skip:3}, 
+			{'name': 'Blacklist', nb: 0, skip:0}
+		];
 		ctrl.selectedCategory = null;
-		ctrl.items = null;
-		ctrl.height = 310;
-		ctrl.search = '';
+		ctrl.response = null;
+		ctrl.items = [];
+		ctrl.filteredItems = [];
+		ctrl.height = 240;
 		ctrl.nbWatchers = '?';
-
+		ctrl.key = null;
+		
+		function search(search) {
+			ctrl.key = search;
+			if(search) {
+				ctrl.filteredItems = $filter('filter')(ctrl.items, search);
+			} else {
+				ctrl.filteredItems = ctrl.items;
+			} 
+		}
+		function switchMode(){
+			ctrl.nbWatchers = '?';
+		}
 		function countWatchers() {
 			var root = $rootScope;
 			var count = root.$$watchers ? root.$$watchers.length : 0;
@@ -43,10 +65,6 @@ import './boxesscroll.js';
 				}
 			}
 			ctrl.nbWatchers = count;
-		}
-
-		function clearSearch() {
-			ctrl.search = '';
 		}
 
 		function keydown(evt, limit) {
@@ -74,9 +92,17 @@ import './boxesscroll.js';
 		}
 		function selectCategory(cat) {
 			ctrl.selectedCategory = cat;
-			$http.get('users.json').then(function (response) {
-				ctrl.items = $filter('limitTo')(response.data, cat.nb, 0);
-			});
+			ctrl.key = null;
+			if(!ctrl.response) {
+				$http.get('users.json').then(function (response) {
+					ctrl.response = response.data;
+					ctrl.items = $filter('limitTo')(ctrl.response, cat.nb, cat.skip);
+					ctrl.filteredItems = ctrl.items;
+				});
+			} else {
+				ctrl.items = $filter('limitTo')(ctrl.response, cat.nb, cat.skip);
+				ctrl.filteredItems = ctrl.items;
+			}
 		}
 	}
 })(angular, _);
