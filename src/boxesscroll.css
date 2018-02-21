@@ -1,6 +1,7 @@
 [box-vscroll], [box-hscroll],
 box-vscroll, box-hscroll {
 	background-repeat: no-repeat;
+	overflow: hidden;
 }
 [box-vscroll], [box-hscroll] {
 /*	position:inherit;*/
@@ -23,11 +24,9 @@ box-vscroll, box-hscroll {
 }
 [box-vscroll], box-vscroll {
 	background-position: right 0%;
-	overflow-y: hidden;
 }
 [box-hscroll], box-hscroll {
 	background-position: 0% bottom;
-	overflow-x: hidden;
 }
 [box-vscroll], [box-hscroll], box-vscroll, box-hscroll {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw8Zb4bSvgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12M4cOAAAASEAkEwrrB4AAAAAElFTkSuQmCC');
