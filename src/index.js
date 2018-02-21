@@ -1,3 +1,4 @@
+/* global _ */
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 
@@ -24,7 +25,7 @@ import './boxesscroll.js';
 		ctrl.categories = [{'name': 'All', nb: 10000}, {'name': 'Family', nb: 5}, {'name': 'Works', nb: 2000}, {'name': 'Friends', nb: 20}, {'name': 'Blacklist', nb: 0}];
 		ctrl.selectedCategory = null;
 		ctrl.items = null;
-		ctrl.height = 300;
+		ctrl.height = 310;
 		ctrl.search = '';
 		ctrl.nbWatchers = '?';
 
