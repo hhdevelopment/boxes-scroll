@@ -66,7 +66,37 @@
 		ctrl.updateLimit = updateLimit;
 		ctrl.updateBegin = updateBegin;
 		ctrl.updateSize = updateSize;
+		ctrl.getInnerLimit = getInnerLimit;
 
+		/**
+		 * Retourne la limit pour les calcul interne, cad le nombre ^'items vraiment visible
+		 * @returns {Number|type.ngLimit|boxesscrollL#1.BoxScrollCtrl.$scope.ngLimit}
+		 */
+		function getInnerLimit() {
+			var items = getItems();
+			var fix = 0;
+			if(items.length) {
+				do {
+					fix = fix + 1;
+					var cont = false;
+					var item = items[items.length - fix];
+					if(item) {
+						var area = getArea(item);
+						if(ctrl.horizontal) {
+							cont = area.right > getEltArea().right;
+						} else {
+							cont = area.bottom > getEltArea().bottom;
+						}
+						if(!cont) fix--;
+					}
+				} while (cont);
+			} else {
+				fix = 1;
+			}
+			fix = Math.max(fix, 1);
+			console.log("FIX", fix);
+			return $scope.max ? $scope.ngLimit : $scope.ngLimit - fix;
+		}
 		/**
 		 * Ajoute tous les handlers
 		 */
@@ -117,7 +147,7 @@
 			}
 			ctrl.infos = null;
 			if (!isNaN($scope.ngBegin) && !isNaN($scope.ngLimit) && !isNaN($scope.total)) {
-				ctrl.infos = "[" + Math.round($scope.ngBegin + 1) + "-" + Math.round($scope.ngBegin + Math.min(getInnerLimit($scope), $scope.total)) + "]/" + $scope.total;
+				ctrl.infos = "[" + Math.round($scope.ngBegin + 1) + "-" + Math.round($scope.ngBegin + Math.min(ctrl.getInnerLimit(), $scope.total)) + "]/" + $scope.total;
 				infosTimer = $timeout(function (c) {
 					c.infos = null;
 				}, $scope.showInfoDelay || 1000, true, ctrl);
@@ -132,24 +162,27 @@
 		function updateTotal() {
 			$scope.ngBegin = 0;
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-			updateGrabberSizes();
 			adjustLimit();
+			updateGrabberSizes();
+			updateInfos();
 		}
 		/**
 		 * La limit a ete mis a jour
 		 */
 		function updateLimit() {
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-			updateGrabberSizes();
 			adjustLimit();
+			updateGrabberSizes();
+			updateInfos();
 		}
 		/**
 		 * begin a ete mis a jour
 		 */
 		function updateBegin() {
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
-			updateGrabberSizes();
 			adjustLimit();
+			updateGrabberSizes();
+			updateInfos();
 		}
 		/**
 		 * La fenetre a ete redimentionn�
@@ -208,7 +241,7 @@
 					inc = 1;
 				}
 			} else {
-				var innerLimit = getInnerLimit($scope);
+				var innerLimit = ctrl.getInnerLimit();
 				if (event.which === 38) { // UP
 					inc = -1;
 				} else if (event.which === 40) { // DOWN
@@ -250,7 +283,7 @@
 					document.addEventListener('mousemove', dragHandler, false);
 					document.addEventListener("mouseup", endDrag, false);
 				} else {
-					var innerLimit = getInnerLimit($scope);
+					var innerLimit = ctrl.getInnerLimit();
 					$scope.ngBegin = $scope.ngBegin + (innerLimit * pos); // next or previous page
 					downData.scope = $scope;
 					downData.inc = pos; // vaut 1 ou -1
@@ -285,7 +318,7 @@
 			var m = boxesScrollServices.getMousePosition(event);
 			var percent = getGrabberOffsetPercentFromMousePosition(m, offsetMouse);
 			var begin = getBeginFromPercent(percent);
-			if (begin <= $scope.total - getInnerLimit($scope)) {
+			if (begin <= $scope.total - ctrl.getInnerLimit()) {
 				$scope.ngBegin = begin;
 			}
 		}
@@ -308,7 +341,7 @@
 		}
 		function manageWheelHandler(event, begin) {
 			var evt = event.originalEvent || event;
-			return boxesScrollServices.minXmax(0, begin + ((evt.deltaY < 0) ? -SCROLLBY : SCROLLBY), $scope.total - getInnerLimit($scope));
+			return boxesScrollServices.minXmax(0, begin + ((evt.deltaY < 0) ? -SCROLLBY : SCROLLBY), $scope.total - ctrl.getInnerLimit());
 		}
 		function getGrabberOffsetPercentFromBegin(begin) {
 			return begin * 100 / $scope.total;
@@ -529,7 +562,7 @@
 		 */
 		function getGrabberSizePercentFromScopeValues() {
 			if ($scope.total) {
-				return Math.min((($scope.max || $scope.ngLimit) / $scope.total) * 100, 100);
+				return Math.min((($scope.max || ctrl.getInnerLimit()) / $scope.total) * 100, 100);
 			}
 			return 100;
 		}
@@ -690,24 +723,21 @@
 		watcherClears.push(scope.$watch('total', function (v1, v2, s) {
 			if (v1 !== v2) {
 				$timeout(s.ctrl.updateTotal, s.debounce || DEBOUNCE, true);
-				s.ctrl.updateInfos();
 			}
 		}));
 		watcherClears.push(scope.$watch('ngLimit', function (v1, v2, s) {
 			if (v1 !== v2) {
 				$timeout(s.ctrl.updateLimit, s.debounce || DEBOUNCE, true);
-				s.ctrl.updateInfos();
 			}
 		}));
 		watcherClears.push(scope.$watch('ngBegin', function (v1, v2, s) {
-			if (v1 >= 0 && v1 <= s.total - getInnerLimit(s)) {
+			if (v1 >= 0 && v1 <= s.total - s.ctrl.getInnerLimit()) {
 				$timeout(s.ctrl.updateBegin, s.debounce || DEBOUNCE, true);
 			} else if (v1 < 0) {
 				s.ngBegin = 0;
 			} else {
-				s.ngBegin = Math.max(s.total - getInnerLimit(s), 0);
+				s.ngBegin = Math.max(s.total - s.ctrl.getInnerLimit(), 0);
 			}
-			s.ctrl.updateInfos();
 		}));
 		scope.$on('$destroy', function () {
 			watcherClears.forEach(function (watcherClear) {
@@ -726,9 +756,6 @@
 				}
 			}
 		}
-	}
-	function getInnerLimit(scope) {
-		return scope.max ? scope.ngLimit : scope.ngLimit - 1;
 	}
 	function boxesScrollServices() {
 		return {
@@ -750,7 +777,7 @@
 		 * @returns {undefined}
 		 */
 		function execAndApplyIfScrollable(scope, obj, func, data) {
-			if (getInnerLimit(scope) < scope.total) {
+			if (scope.ctrl.getInnerLimit() < scope.total) {
 				scope.$apply(function () {
 					func.apply(obj, data);
 				});
