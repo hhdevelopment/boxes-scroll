@@ -441,7 +441,7 @@
 						return 0;
 				}
 			}
-			return NaN();
+			return Number.NaN;
 		}
 		function getOffsetMouseFromGrabber(m) {
 			var result = 0;
@@ -775,10 +775,10 @@
 		 * @param {Object} obj
 		 * @param {type} func
 		 * @param {array} data
-		 * @returns {undefined}
 		 */
 		function execAndApplyIfScrollable(scope, obj, func, data) {
-			if (scope.ctrl.getInnerLimit() < scope.total) {
+			var limit = Math.max(scope.ctrl.getInnerLimit(), 0);
+			if (limit < scope.total) {
 				scope.$apply(function () {
 					func.apply(obj, data);
 				});
