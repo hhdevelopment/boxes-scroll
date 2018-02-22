@@ -146,7 +146,9 @@
 			}
 			ctrl.infos = null;
 			if (!isNaN($scope.ngBegin) && !isNaN($scope.ngLimit) && !isNaN($scope.total)) {
-				ctrl.infos = "[" + Math.round($scope.ngBegin + 1) + "-" + Math.round($scope.ngBegin + Math.min(ctrl.getInnerLimit(), $scope.total)) + "]/" + $scope.total;
+				var from = $scope.total?$scope.ngBegin + 1:0;
+				var to =  $scope.ngBegin + boxesScrollServices.minXmax(0, ctrl.getInnerLimit(), $scope.total);
+				ctrl.infos = "[" + from + "-" + to + "]/" + $scope.total;
 				infosTimer = $timeout(function (c) {
 					c.infos = null;
 				}, $scope.showInfoDelay || 1000, true, ctrl);
