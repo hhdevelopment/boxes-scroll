@@ -17,32 +17,14 @@ module.exports = function (env) {
 		},
 		module: {
 			rules: [
-				{
-					test: /\.css$/,
-					use: ExtractTextPlugin.extract({
-						use: 'css-loader'
-					})
-				}, {
-					test: /\.html$/,
-					use: [
-						'angular-templatecache-loader'
-					]
-				}, {
-					test: /\.(json|woff|woff2|eot|ico|ttf|otf|png|svg|jpg|gif)$/,
-					use: [
-						'file-loader'
-					]
-				}, {
-					test: /\.(csv|tsv)$/,
-					use: 'csv-loader'
-				}, {
-					test: /\.xml$/,
-					use: 'xml-loader'
-				}
+				{test: /\.css$/, use: ExtractTextPlugin.extract({use: 'css-loader'})},
+				{test: /\.html$/, use: ['angular-templatecache-loader']}, 
+				{test: /\.(json|woff|woff2|eot|ico|ttf|otf|png|svg|jpg|gif)$/, use: ['file-loader']},
+				{test: /\.(csv|tsv)$/, use: 'csv-loader'},
+				{test: /\.xml$/, use: 'xml-loader'}
 			]
 		},
 		plugins: [
-			new CopyWebpackPlugin(['users.json']),
 			new webpack.ProvidePlugin({
 				_: 'lodash',
 				'window.jQuery': 'jquery',
@@ -57,14 +39,15 @@ module.exports = function (env) {
 					return module.context && module.context.indexOf('node_modules') !== -1;
 				}
 			}),
-			//CommonChunksPlugin will now extract all the common modules from vendor and main bundles
-			new webpack.optimize.CommonsChunkPlugin({
-				name: 'manifest' //But since there are no more common modules between them we end up with just the runtime code included in the manifest file
-			}),
 			new HtmlWebpackPlugin({
 				template: './index.ejs',
 				favicon: 'favicon.ico'
 			}),
+			new CopyWebpackPlugin([
+				{ from: 'users.json', to: '../public_html/' },  
+				{ from: 'boxesscroll.css', to: '../dist/' },  
+				{ from: 'boxesscroll.js', to: '../dist/' }
+			]),
 			new CleanObsoleteChunks({verbose: true})
 		]
 	};
