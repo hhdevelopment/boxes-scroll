@@ -2,7 +2,7 @@
   "name": "boxes-scroll",
   "description": "Boxes with scrollbar for ng-repeat",
   "author": "Achache francois",
-  "license": "ISC",
+  "license": "MIT",
   "main": [
     "src/boxesscroll.js",
     "src/boxesscroll.css"
