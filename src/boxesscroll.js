@@ -69,17 +69,17 @@
 		ctrl.getInnerLimit = getInnerLimit;
 
 		/**
-		 * Retourne la limit pour les calcul interne, cad le nombre ^'items vraiment visible
+		 * Retourne la limit pour les calcul interne, cad le nombre d'items vraiment visible
 		 * @returns {Number|type.ngLimit|boxesscrollL#1.BoxScrollCtrl.$scope.ngLimit}
 		 */
 		function getInnerLimit() {
 			var items = getItems();
-			var fix = 0;
+			var notInDeck = 0;
 			if(items.length) {
 				do {
-					fix = fix + 1;
+					notInDeck = notInDeck + 1;
 					var cont = false;
-					var item = items[items.length - fix];
+					var item = items[items.length - notInDeck];
 					if(item) {
 						var area = getArea(item);
 						if(ctrl.horizontal) {
@@ -87,14 +87,13 @@
 						} else {
 							cont = area.bottom > getEltArea().bottom;
 						}
-						if(!cont) fix--;
+						if(!cont) notInDeck--;
 					}
 				} while (cont);
 			} else {
-				fix = 1;
+				notInDeck = 1;
 			}
-			fix = Math.max(fix, 1);
-			console.log("FIX", fix);
+			var fix = ($scope.ngLimit - items.length) + notInDeck;
 			return $scope.max ? $scope.ngLimit : $scope.ngLimit - fix;
 		}
 		/**
