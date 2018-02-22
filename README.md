@@ -28,10 +28,10 @@ Set size of your table in pixel on box, or set the maximun items that you want a
 | tree structure   	| ![-][negative] Can't be used, cause all nodes are not rendered                                                                	| ![+][positive] Can be used, all nodes are rendered, the tree structure is retained                                                         	|   
 |                  	|                                                                                                                               	|                                                                                                                                            	|   
 
-[positive]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAFoAAABaABCY1W7wAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAC2SURBVDiNxZHNCcJAEIW/CblLDoqCuWgpXrUDEdJB0ogpISB2oFdLMeAP+HOzgR0vCYYlizEgeafZncc3s/sEhybb+UyMZADqaZQv94c6n+cCiJEUCIFQjKxdPicA6FfqQRtAI3UPkOK3U2Bs9XqVAQZ4Wf0rEPtFVGGDTQPrLgAyD9Cf9/5IfSACysyr+vaECyqxuNDTzeIGDIvj/bjajep83cf4V8CzLAQebQAJcAZOqpK4TG/43SdNkesUqwAAAABJRU5ErkJggg== "Positive point"
-[negative]: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAFoAAABaABCY1W7wAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABXSURBVDiN7Y6hEYAwEAT3QxrAQwNpg0roIJ3E4FMZCtoIh8X+wAwm6/f2oPM/tm9p0XAVxOQzOUE5KrSKbHanxQhWA5jc8mMmYlqRFcD74kDKL+Kdz7gBi8QVrxyJK7sAAAAASUVORK5CYII= "Negative point"
+[positive]: assets/plus.png "Positive point"
+[negative]: assets/minus.png "Negative point"
 
-![Screenshot1](screenshot1.png)
+![Screenshot1](assets/screenshot1.png)
 
 ---
 
