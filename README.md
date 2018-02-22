@@ -1,5 +1,6 @@
 # BOXES-SCROLL : synchronize ng-repeat with scrollbar
 
+[![npm version](https://badge.fury.io/js/boxes-scroll.svg)](https://www.npmjs.com/package/boxes-scroll)
 [![Build Status](https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master)](https://travis-ci.org/hhdevelopment/boxes-scroll)
 
 boxes-scroll is a collection of directives for angular 1.x
