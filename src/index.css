@@ -1,4 +1,7 @@
-body { padding-top: 70px; }
+body { 
+	position: relative;
+	padding-top: 70px; 
+}
 
 @media (min-width: 767px) { 
 	#navigation{
