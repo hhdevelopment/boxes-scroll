@@ -1,7 +1,14 @@
 # BOXES-SCROLL : synchronize ng-repeat with scrollbar
 
-[![npm version](https://badge.fury.io/js/boxes-scroll.svg)](https://www.npmjs.com/package/boxes-scroll)
+[![npm version](https://img.shields.io/npm/v/boxes-scroll.svg)](https://www.npmjs.com/package/boxes-scroll)
 [![Build Status](https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master)](https://travis-ci.org/hhdevelopment/boxes-scroll)
+[![Github](https://github.com/hhdevelopment/boxes-scroll)](https://img.shields.io/badge/hhdevelopment-boxes--scroll-orange.svg)
+
+## Web site
+
+http://hhdev.fr/boxes-scroll/index.html#
+
+## Overview
 
 boxes-scroll is a collection of directives for angular 1.x
 
@@ -35,12 +42,6 @@ Set size of your table in pixel on box, or set the maximun items that you want a
 
 ---
 
-## Demo
-
-http://hhdev.fr/boxes-scroll/index.html#
-
----
-
 ## Installation
 
 Installation is easy with minimal dependencies - only the AngularJS and Jquery
@@ -48,7 +49,7 @@ Installation is easy with minimal dependencies - only the AngularJS and Jquery
 #### Install with NPM
 
 ```sh
-$ npm install scroll-box
+$ npm install boxes-scroll
 ```
 
 ### Adding dependency to your project
@@ -56,8 +57,8 @@ $ npm install scroll-box
 When you are done downloading all the dependencies and project files the only remaining part is to add dependencies on the `scroll-box` AngularJS module:
 
 ```js
-require('./node_modules/ng-infinity-scroll/dist/scrollbox.css');
-require('./node_modules/ng-infinity-scroll/dist/scrollbox.js');
+require('./node_modules/ng-infinity-scroll/dist/boxesscroll.css');
+require('./node_modules/ng-infinity-scroll/dist/boxesscroll.js');
 ```
 
 ```js

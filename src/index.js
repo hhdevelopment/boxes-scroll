@@ -2,14 +2,26 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 
+import CodeMirror from 'codemirror/lib/codemirror.js';
+import 'codemirror/mode/javascript/javascript.js';
+import 'codemirror/mode/htmlembedded/htmlembedded.js';
+import 'codemirror/mode/htmlmixed/htmlmixed.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/rubyblue.css';
+window.CodeMirror = CodeMirror;
+
 import angular from 'angular';
+
+import 'angular-ui-codemirror/src/ui-codemirror.js';
 
 import './boxesscroll.css';
 import './boxesscroll.js';
 
+import './index.css';
+
 (function (ng, __) {
 	'use strict';
-	ng.module('app', ['boxes.scroll']).config(appConfig).controller('AppController', AppController);
+	ng.module('app', ['boxes.scroll', 'ui.codemirror']).config(appConfig).controller('AppController', AppController);
 	/* @ngInject */
 	function appConfig($compileProvider) {
 		// disable debug info
@@ -17,54 +29,38 @@ import './boxesscroll.js';
 	}
 	function AppController($rootScope, $http, $filter) {
 		var ctrl = this;
-		ctrl.selectCategory = selectCategory;
-		ctrl.search = search;
+		ctrl.limit;
+		ctrl.begin;
+		ctrl.selectedItem;
 		ctrl.keydown = keydown;
-		ctrl.countWatchers = countWatchers;
-		ctrl.switchMode = switchMode;
 
-		ctrl.categories = [
-			{'name': 'All', nb: 10000, skip:0}, 
-			{'name': 'Unclassified', nb: 200, skip:200}, 
-			{'name': 'Family', nb: 5, skip:5}, 
-			{'name': 'Works', nb: 2000, skip:2000}, 
-			{'name': 'Friends', nb: 20, skip:20}, 
-			{'name': 'Others', nb: 3, skip:3}, 
-			{'name': 'Blacklist', nb: 0, skip:0}
-		];
-		ctrl.selectedCategory = null;
+		init();
+		ctrl.cmJsOptions = {
+			lineWrapping: true,
+			lineNumbers: true,
+			theme: 'rubyblue',
+			readOnly: 'nocursor',
+			mode: 'javascript'
+		};
+		ctrl.cmHtmlOptions = {
+			lineWrapping: true,
+			lineNumbers: true,
+			theme: 'rubyblue',
+			readOnly: 'nocursor',
+			mode: 'htmlembedded'
+		};
 		ctrl.response = null;
 		ctrl.items = [];
-		ctrl.filteredItems = [];
+		ctrl.items_200 = [];
 		ctrl.height = 240;
-		ctrl.nbWatchers = '?';
-		ctrl.key = null;
-		
-		function search(search) {
-			ctrl.key = search;
-			if(search) {
-				ctrl.filteredItems = $filter('filter')(ctrl.items, search);
-			} else {
-				ctrl.filteredItems = ctrl.items;
-			} 
-		}
-		function switchMode(){
-			ctrl.nbWatchers = '?';
-		}
-		function countWatchers() {
-			var root = $rootScope;
-			var count = root.$$watchers ? root.$$watchers.length : 0;
-			var pendingChildHeads = [root.$$childHead];
-			var currentScope;
-			while (pendingChildHeads.length) {
-				currentScope = pendingChildHeads.shift();
-				while (currentScope) {
-					count += currentScope.$$watchers ? currentScope.$$watchers.length : 0;
-					pendingChildHeads.push(currentScope.$$childHead);
-					currentScope = currentScope.$$nextSibling;
-				}
-			}
-			ctrl.nbWatchers = count;
+		ctrl.nb = 200;
+
+		function init() {
+			$http.get('users.json').then(function (response) {
+				ctrl.response = response.data;
+				ctrl.items_200 = $filter('limitTo')(ctrl.response, 200, 0);
+				ctrl.items = response.data;
+			});
 		}
 
 		function keydown(evt, limit) {
@@ -89,20 +85,6 @@ import './boxesscroll.js';
 				event.preventDefault();
 			}
 			return inc;
-		}
-		function selectCategory(cat) {
-			ctrl.selectedCategory = cat;
-			ctrl.key = null;
-			if(!ctrl.response) {
-				$http.get('users.json').then(function (response) {
-					ctrl.response = response.data;
-					ctrl.items = $filter('limitTo')(ctrl.response, cat.nb, cat.skip);
-					ctrl.filteredItems = ctrl.items;
-				});
-			} else {
-				ctrl.items = $filter('limitTo')(ctrl.response, cat.nb, cat.skip);
-				ctrl.filteredItems = ctrl.items;
-			}
 		}
 	}
 })(angular, _);
