@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/boxes-scroll.svg)](https://www.npmjs.com/package/boxes-scroll)
 [![Build Status](https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master)](https://travis-ci.org/hhdevelopment/boxes-scroll)
-[![Github](https://github.com/hhdevelopment/boxes-scroll)](https://img.shields.io/badge/hhdevelopment-boxes--scroll-orange.svg)
+[![Github](https://img.shields.io/badge/hhdevelopment-boxes--scroll-orange.svg)](https://github.com/hhdevelopment/boxes-scroll)
 
 ## Web site
 
