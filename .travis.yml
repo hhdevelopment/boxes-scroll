@@ -4,16 +4,18 @@ node_js:
 cache:
   directories:
     - "node_modules"
+env:
+  - REPO_NAME=boxes-scroll
 branches:
   only:
   - website
 before_install:
   - sudo apt-get install lftp
+before_script:
+  - rm -rf node_modules/boxes-scroll
 script: 
   - webpack
 deploy:
   - provider: script
-    script: lftp sftp://$SFTP_1AND1_HOST -u $SFTP_1AND1_USER,$SFTP_1AND1_PWD -e "lcd public_html; cd boxes-scroll; mrm **/*; mirror -R; bye"
+    script: lftp sftp://$SFTP_1AND1_HOST -u $SFTP_1AND1_USER,$SFTP_1AND1_PWD -e "lcd public_html; cd $REPO_NAME; mrm **/*; mirror -R; bye"
     skip_cleanup: true
-    on: 
-      branch: website

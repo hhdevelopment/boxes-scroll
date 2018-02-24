@@ -37,8 +37,8 @@ import angular from 'angular';
 
 import 'angular-ui-codemirror/src/ui-codemirror.js';
 
-import './boxesscroll.css';
-import './boxesscroll.js';
+import 'boxes-scroll/dist/boxesscroll.css';
+import 'boxes-scroll/dist/boxesscroll.js';
 
 import './index.css';
 

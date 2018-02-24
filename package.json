@@ -1,24 +1,13 @@
 {
-  "name": "boxes-scroll",
-  "version": "2.0.26",
+  "name": "boxes-scroll.website",
   "author": "Achache francois",
   "license": "MIT",
-  "files": [
-    "dist/boxesscroll.js",
-    "dist/boxesscroll.css"
-  ],
-  "main": "dist/boxesscroll.js",
-  "keywords": [
-    "angular",
-    "ng-repeat",
-    "scroll",
-    "table"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/hhdevelopment/boxes-scroll.git"
   },
   "dependencies": {
+	 "boxes-scroll":"2.x",
     "@fortawesome/fontawesome-free-webfonts": "^1.0.3",
     "angular": "^1.6.3",
     "angular-ui-codemirror": "0.3.0",
@@ -30,7 +19,6 @@
   },
   "devDependencies": {
     "angular-templatecache-loader": "^0.x",
-    "bower": "^1.x",
     "copy-webpack-plugin": "^4.x",
     "css-loader": "^0.x",
     "extract-text-webpack-plugin": "^3.x",

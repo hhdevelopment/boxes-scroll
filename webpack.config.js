@@ -44,9 +44,7 @@ module.exports = function (env) {
 				favicon: 'favicon.ico'
 			}),
 			new CopyWebpackPlugin([
-				{ from: 'users.json', to: '../public_html/' },  
-				{ from: 'boxesscroll.css', to: '../dist/' },  
-				{ from: 'boxesscroll.js', to: '../dist/' }
+				{ from: 'users.json', to: '../public_html/' }
 			]),
 			new CleanObsoleteChunks({verbose: true})
 		]
