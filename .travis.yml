@@ -6,7 +6,7 @@ cache:
     - "node_modules"
 branches:
   only:
-  - master
+  - website
 before_install:
   - sudo apt-get install lftp
 script: 
