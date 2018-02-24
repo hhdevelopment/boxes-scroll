@@ -5,43 +5,44 @@
 		<title>Demo Boxes scroll</title>
 	</head>
 	<body ng-controller="AppController as ctrl" data-spy="scroll" data-target="#navigation" data-offset="70">
+	<ng-include src="'./navbar.html'"></ng-include>
 	<ng-include src="'../navbar.html'"></ng-include>
 	<div class="container-fluid">
 		<div class="row">
 			<div id="navigation" class="col-sm-3 hidden-xs">
 				<ul class="nav nav-pills nav-stacked" role="tablist">
 					<li role="presentation">
-						<a href="#overview">Overview</a>
+						<a href="#overview"><span class="fas fa-eye"></span>&nbsp;Overview</a>
 					</li>
 					<li role="presentation">
-						<a href="#requirements">Requirements</a>
+						<a href="#requirements"><span class="fas fa-puzzle-piece"></span>&nbsp;Requirements</a>
 					</li>
 					<li role="presentation">
-						<a href="#installation">Installation</a>
+						<a href="#installation"><span class="fas fa-wrench"></span>&nbsp;Installation</a> 
 					</li>
 					<li role="presentation">
-						<a href="#comparaison">Comparaison</a>
+						<a href="#comparaison"><span class="far fa-check-square"></span>&nbsp;Comparaison</a>
 					</li>
 					<li role="presentation">
-						<a href="#minimal">Minimal code</a>
+						<a href="#minimal"><span class="fas fa-code"></span>&nbsp;Minimal code</a>
 					</li>
 					<li role="presentation">
-						<a href="#use">Use</a>
+						<a href="#use"><span class="far fa-play-circle"></span>&nbsp;Use</a>
 					</li>
 					<li role="presentation">
-						<a href="#vertical">Vertical scroll</a>
+						<a href="#vertical"><span class="fas fa-arrows-alt-v"></span>&nbsp;Vertical scroll</a> 
 					</li>
 					<li role="presentation">
-						<a href="#horizontal">Horizontal scroll</a>
+						<a href="#horizontal"><span class="fas fa-arrows-alt-h"></span>&nbsp;Horizontal scroll</a>
 					</li>
 					<li role="presentation">
-						<a href="#options">Configuration and options</a>
+						<a href="#options"><span class="fas fa-cogs"></span>&nbsp;Configuration and options</a>
 					</li>
 					<li role="presentation">
-						<a href="#fulldemo">Full demo</a>
+						<a href="#fulldemo"><span class="fas fa-desktop"></span>&nbsp;Full demo</a>
 					</li>
 					<li role="presentation">
-						<a href="https://github.com/hhdevelopment/boxes-scroll" target="_blank"><span class="glyphicon glyphicon-github"></span>Github</a>
+						<a href="https://github.com/hhdevelopment/boxes-scroll" target="_blank"><span class="fab fa-github"></span>&nbsp;Github</a>
 					</li>
 				</ul>
 			</div>			
@@ -96,7 +97,7 @@
 								</div>
 								<label>7 items rendered ~= +7 watchers</label>
 							</form>
-							<label>In table : 5 items visible, 5 items rendered ~= +5 watchers</label>
+							<label>In table : 5 items visible, 5 items rendered ~= +5*x watchers</label>
 							<box-vscroll total="ctrl.items_200.length" ng-begin="begin1" ng-limit="limit1" style="height:200px;border:solid 1px black;">
 								<table class="table table-hover table-striped">
 									<thead>
@@ -135,7 +136,7 @@
 								</div>
 								<label>200 items rendered ~= +200 watchers</label>
 							</form>
-							<label>In table : 5 items visible, 200 items rendered ~= +200 watchers</label>
+							<label>In table : 5 items visible, 200 items rendered ~= +200*x watchers</label>
 							<div style="height: 200px; border:solid 1px black;overflow-y: scroll">
 								<table class="table table-hover table-striped">
 									<thead>

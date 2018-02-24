@@ -1,5 +1,22 @@
 /* global _ */
 import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootswatch/cerulean/bootstrap.css';
+//import 'bootswatch/cosmo/bootstrap.css';
+//import 'bootswatch/cyborg/bootstrap.css';
+//import 'bootswatch/darkly/bootstrap.css';
+//import	'bootswatch/flatly/bootstrap.css';
+//import 'bootswatch/journal/bootstrap.css';
+//import 'bootswatch/lumen/bootstrap.css';
+//import 'bootswatch/paper/bootstrap.css';
+//import 'bootswatch/readable/bootstrap.css';
+//import 'bootswatch/sandstone/bootstrap.css';
+//import 'bootswatch/simplex/bootstrap.css';
+//import 'bootswatch/slate/bootstrap.css';
+//import 'bootswatch/spacelab/bootstrap.css';
+//import 'bootswatch/superhero/bootstrap.css';
+//import 'bootswatch/united/bootstrap.css';
+//import 'bootswatch/yeti/bootstrap.css';
+
 import 'bootstrap/dist/js/bootstrap.js';
 
 import CodeMirror from 'codemirror/lib/codemirror.js';
@@ -8,6 +25,12 @@ import 'codemirror/mode/htmlembedded/htmlembedded.js';
 import 'codemirror/mode/htmlmixed/htmlmixed.js';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/rubyblue.css';
+
+import '@fortawesome/fontawesome-free-webfonts/css/fontawesome.css';
+import '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css';
+import '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css';
+import '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css';
+
 window.CodeMirror = CodeMirror;
 
 import angular from 'angular';
@@ -27,8 +50,9 @@ import './index.css';
 		// disable debug info
 //		$compileProvider.debugInfoEnabled(false);
 	}
-	function AppController($rootScope, $http, $filter) {
+	function AppController($http, $filter) {
 		var ctrl = this;
+		ctrl.module = 'boxes-scroll';
 		ctrl.limit;
 		ctrl.begin;
 		ctrl.selectedItem;
