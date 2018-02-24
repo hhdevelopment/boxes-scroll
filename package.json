@@ -4,10 +4,11 @@
   "author": "Achache francois",
   "license": "MIT",
   "files": [
+    "dist/index.js",
     "dist/boxesscroll.js",
     "dist/boxesscroll.css"
   ],
-  "main": "dist/boxesscroll.js",
+  "main": "dist/index.js",
   "keywords": [
     "angular",
     "ng-repeat",
@@ -19,28 +20,12 @@
     "url": "https://github.com/hhdevelopment/boxes-scroll.git"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free-webfonts": "^1.0.3",
     "angular": "^1.6.3",
-    "angular-ui-codemirror": "0.3.0",
-    "bootstrap": "^3.3.7",
-    "bootswatch": "^3.0.0",
-    "codemirror": "5.35.0",
-    "jquery": "^3.3.1",
-    "lodash": "^4.17.5"
+    "jquery": "^3.3.1"
   },
   "devDependencies": {
-    "angular-templatecache-loader": "^0.x",
-    "bower": "^1.x",
-    "copy-webpack-plugin": "^4.x",
-    "css-loader": "^0.x",
-    "extract-text-webpack-plugin": "^3.x",
     "file-loader": "^1.x",
-    "html-webpack-plugin": "^2.x",
-    "path": "^0.x",
-    "style-loader": "^0.x",
-    "url-loader": "^0.x",
-    "webpack": "^3.x",
-    "webpack-clean-obsolete-chunks": "^0.x"
+    "webpack": "^3.x"
   },
   "scripts": {
     "webpack": "webpack --progress --profile --colors",

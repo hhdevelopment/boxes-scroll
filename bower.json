@@ -9,7 +9,8 @@
   ],
   "keywords": [
     "angular",
-    "infinity scroll",
+    "ng-repeat",
+    "scroll",
     "table"
   ],
   "ignore": [
@@ -21,8 +22,6 @@
   ],
   "dependencies": {
     "angular": "^1.6.3",
-    "jquery": "^3.3.1",
-    "bootstrap": "^3.3.7",
-    "lodash": "4.17.5"
+    "jquery": "^3.3.1"
   }
 }

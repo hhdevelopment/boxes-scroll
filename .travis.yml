@@ -4,18 +4,17 @@ node_js:
 cache:
   directories:
     - "node_modules"
+env:
+  - REPO_NAME=boxes-scroll
 branches:
   only:
   - master
-before_install:
-  - sudo apt-get install lftp
 before_script:
   - git config user.email "$GITHUB_MAIL"
   - git config user.name "$GITHUB_USER"
 script: 
   - git checkout master
   - webpack
-  - ls
 deploy:
   - provider: script
     script: npm version patch -m "[ci skip]"
@@ -23,7 +22,7 @@ deploy:
     on:
       branch: master
   - provider: script
-    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/hhdevelopment/boxes-scroll.git master
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
       branch: master
@@ -42,12 +41,7 @@ deploy:
     on: 
       branch: master
   - provider: script
-    script: lftp sftp://$SFTP_1AND1_HOST -u $SFTP_1AND1_USER,$SFTP_1AND1_PWD -e "lcd public_html; cd boxes-scroll; mrm *; mput *; bye"
-    skip_cleanup: true
-    on: 
-      branch: master
-  - provider: script
-    script: bower register boxes-scroll https://github.com/hhdevelopment/boxes-scroll.git
+    script: bower register $REPO_NAME https://github.com/$TRAVIS_REPO_SLUG.git
     skip_cleanup: true
     on: 
       branch: register_bower

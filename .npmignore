@@ -1,9 +1,10 @@
 /nbproject/
 /src/
+/bower_components/
 /node_modules/
-/public_html/
 /gulpfile.js
 /bitbucket-pipelines.yml
+/travis.yml
 /.gitignore
 /.npmignore
 /.npmrc
