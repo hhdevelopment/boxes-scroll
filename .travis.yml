@@ -11,9 +11,9 @@ branches:
   - website
 before_install:
   - sudo apt-get install lftp
-  - npm install
 before_script:
   - rm -rf node_modules/boxes-scroll
+  - npm install
 script: 
   - webpack
 deploy:
