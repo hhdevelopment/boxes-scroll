@@ -7,8 +7,13 @@ box-scroll, box-vscroll, box-hscroll {
 /*	position:inherit;*/
 }
 box-scroll, box-vscroll, box-hscroll {
-	display: block;
 	position:relative;
+}
+box-scroll.vertical, box-vscroll {
+	display: block;
+}
+box-scroll.horizontal, box-hscroll {
+	display: flex;
 }
 [box-scroll].vertical, box-scroll.vertical, 
 [box-vscroll], box-vscroll {
