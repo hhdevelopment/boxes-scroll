@@ -4,8 +4,14 @@
 	var SCROLLBY = 1;
 	var GRABBERMIN = 15;
 	'use strict';
-	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices)
-			  .directive('boxVscroll', BoxVscroll).directive('boxHscroll', BoxHscroll).directive('boxScroll', BoxScroll);
+	var scrollmodule;
+	try {
+		scrollmodule = ng.module('boxes.scroll');
+	} catch (e) {
+		scrollmodule = ng.module('boxes.scroll', []);
+	}
+	scrollmodule.factory('boxesScrollServices', boxesScrollServices)
+			  .directive('boxVscroll', BoxVscroll).directive('boxHscroll', BoxHscroll);
 	var scope = {
 		'total': '<',
 		'max': '<',
@@ -16,18 +22,6 @@
 		'ngLimit': '='//,
 //		'position':'<' // reverse ou both
 	};
-	/* @ngInject */
-	function BoxScroll($timeout, $interval, $compile) {
-		return {
-			restrict: 'EA',
-			controller: BoxScrollCtrl,
-			controllerAs: 'ctrl',
-			scope: scope,
-			link: function (scope, ngelt, attrs, ctrl) {
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl);
-			}
-		};
-	}
 	/* @ngInject */
 	function BoxVscroll($timeout, $interval, $compile) {
 		return {
@@ -70,6 +64,8 @@
 		ctrl.ngelt; // le composant lui meme
 		ctrl.elt; // le composant lui meme
 		ctrl.infos = null;
+		ctrl.horizontal = false;
+		ctrl.childScope;
 
 		ctrl.addEventListeners = addEventListeners; // gestion des events
 		ctrl.updateInfos = updateInfos; // met a jours les infos 
@@ -78,6 +74,19 @@
 		ctrl.updateBegin = updateBegin;
 		ctrl.updateSize = updateSize;
 		ctrl.getInnerLimit = getInnerLimit;
+		ctrl.setChildScope = setChildScope;
+		ctrl.setTotal = setTotal;
+		function setTotal(total) {
+			console.log("SET TOTAL", total);
+			$scope.total = total;
+			if(ctrl.childScope) {
+				ctrl.childScope.begin = 0;
+				ctrl.childScope.limit = 1;
+			}
+		}
+		function setChildScope(scope) {
+			ctrl.childScope = scope;
+		}
 
 		/**
 		 * Retourne la limit pour les calcul interne, cad le nombre d'items vraiment visible
@@ -86,21 +95,19 @@
 		function getInnerLimit() {
 			var items = getItems();
 			var notInDeck = 0;
-			if (items.length) {
+			if(items.length) {
 				do {
 					notInDeck = notInDeck + 1;
 					var cont = false;
 					var item = items[items.length - notInDeck];
-					if (item) {
+					if(item) {
 						var area = getArea(item);
-						if (ctrl.horizontal) {
+						if(ctrl.horizontal) {
 							cont = area.right > getEltArea().right;
 						} else {
 							cont = area.bottom > getEltArea().bottom;
 						}
-						if (!cont) {
-							notInDeck--;
-						}
+						if(!cont) notInDeck--;
 					}
 				} while (cont);
 			} else {
@@ -159,8 +166,8 @@
 			}
 			ctrl.infos = null;
 			if (!isNaN($scope.ngBegin) && !isNaN($scope.ngLimit) && !isNaN($scope.total)) {
-				var from = $scope.total ? $scope.ngBegin + 1 : 0;
-				var to = $scope.ngBegin + boxesScrollServices.minXmax(0, ctrl.getInnerLimit(), $scope.total);
+				var from = $scope.total?$scope.ngBegin + 1:0;
+				var to =  $scope.ngBegin + boxesScrollServices.minXmax(0, ctrl.getInnerLimit(), $scope.total);
 				ctrl.infos = "[" + from + "-" + to + "]/" + $scope.total;
 				infosTimer = $timeout(function (c) {
 					c.infos = null;
@@ -468,11 +475,10 @@
 			return result;
 		}
 		function adjustLimit() {
-			var items = getItems(); // il y en a au moins un
-			computeDirectionIfNeeded(items);
 			if ($scope.max) {
 				$scope.ngLimit = $scope.max;
 			} else if ($scope.total) {
+				var items = getItems(); // il y en a au moins un
 				if (items.length) {
 					var size = 0;
 					var empty = 0;
@@ -484,7 +490,7 @@
 					empty = getHeightArea() - offset - size;
 					var inc = 0;
 					var average = size / items.length;
-					if (average) { // protect div par 0
+					if(average) { // protect div par 0
 						var floatValue = empty / average;
 						inc = floatValue < 0 ? Math.ceil(floatValue) : Math.ceil(floatValue); // on veut en voir une de plus
 						if (inc === floatValue) { // on tombe pile poil, on rajoute un, pour tjs avoir un de plus
@@ -497,27 +503,6 @@
 						if (newLimit !== $scope.ngLimit) {
 							$scope.ngLimit = newLimit;
 						}
-					}
-				}
-			}
-		}
-		function computeDirectionIfNeeded(items) {
-			if (ctrl.ngelt.is('box-scroll') || ctrl.ngelt.attr('box-scroll') !== undefined) {
-				if (!ctrl.ngelt.hasClass('vertical') && !ctrl.ngelt.hasClass('horizontal') && items.length) {
-					var inlineDisplays = ['table-cell'];
-					var display = ng.element(items[0]).css('display');
-					ctrl.ngelt.removeClass('horizontal');
-					ctrl.ngelt.removeClass('vertical');
-					var inlineElt = display.indexOf('inline') !== -1;
-					if(inlineElt || inlineDisplays.indexOf(display) !== -1) {
-						if(inlineElt) {
-							ctrl.ngelt.css('display', 'flex');
-						}
-						ctrl.ngelt.addClass('horizontal');
-						ctrl.horizontal = true;
-					} else {
-						ctrl.ngelt.addClass('vertical');
-						ctrl.horizontal = false;
 					}
 				}
 			}
@@ -537,22 +522,20 @@
 		 * Calcul la taille des grabbers 
 		 */
 		function updateGrabberSizes() {
-			if (ctrl.horizontal !== undefined) {
-				var bgSizeElt = ctrl.ngelt.css('background-size');
-				var bgSizeSb = ctrl.ngsb.css('background-size');
+			var bgSizeElt = ctrl.ngelt.css('background-size');
+			var bgSizeSb = ctrl.ngsb.css('background-size');
 
-				var grabbersizePixel = getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
+			var grabbersizePixel = getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
 
-				if (ctrl.horizontal) {
-					bgSizeElt = bgSizeElt.replace(/.*\s+/, grabbersizePixel + 'px ');
-					bgSizeSb = bgSizeSb.replace(/.*\s+/, grabbersizePixel + 'px ');
-				} else {
-					bgSizeElt = bgSizeElt.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel + 'px');
-					bgSizeSb = bgSizeSb.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel + 'px');
-				}
-				ctrl.ngelt.css({'background-size': bgSizeElt});
-				ctrl.ngsb.css({'background-size': bgSizeSb});
+			if (ctrl.horizontal) {
+				bgSizeElt = bgSizeElt.replace(/.*\s+/, grabbersizePixel + 'px ');
+				bgSizeSb = bgSizeSb.replace(/.*\s+/, grabbersizePixel + 'px ');
+			} else {
+				bgSizeElt = bgSizeElt.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel + 'px');
+				bgSizeSb = bgSizeSb.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel + 'px');
 			}
+			ctrl.ngelt.css({'background-size': bgSizeElt});
+			ctrl.ngsb.css({'background-size': bgSizeSb});
 		}
 		/**
 		 * Corrige et déplace le curseur
@@ -767,10 +750,18 @@
 			if (v1 !== v2) {
 				$timeout(s.ctrl.updateLimit, s.debounce || DEBOUNCE, true);
 			}
+			if(s.ctrl.childScope) {
+				console.log("UPDTATE s.ctrl.childScope.limit", v1);
+				s.ctrl.childScope.limit = v1;
+			}
 		}));
 		watcherClears.push(scope.$watch('ngBegin', function (v1, v2, s) {
 			if (v1 >= 0 && v1 <= s.total - s.ctrl.getInnerLimit()) {
 				$timeout(s.ctrl.updateBegin, s.debounce || DEBOUNCE, true);
+				if(s.ctrl.childScope) {
+					console.log("UPDTATE s.ctrl.childScope.begin", v1);
+					s.ctrl.childScope.begin = v1;
+				}
 			} else if (v1 < 0) {
 				s.ngBegin = 0;
 			} else {

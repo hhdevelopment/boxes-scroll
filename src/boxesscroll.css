@@ -1,43 +1,53 @@
-[box-vscroll], [box-hscroll],
-box-vscroll, box-hscroll {
+[box-scroll], [box-vscroll], [box-hscroll],
+box-scroll, box-vscroll, box-hscroll {
 	background-repeat: no-repeat;
 	overflow: hidden;
 }
-[box-vscroll], [box-hscroll] {
+[box-scroll], [box-vscroll], [box-hscroll] {
 /*	position:inherit;*/
 }
-box-vscroll, box-hscroll {
+box-scroll, box-vscroll, box-hscroll {
 	display: block;
 	position:relative;
 }
+[box-scroll].vertical, box-scroll.vertical, 
 [box-vscroll], box-vscroll {
 	background-size: 4px 100%;
 }
+[box-scroll].vertical > *:not(.infos-scrolling), box-scroll.vertical > *:not(.infos-scrolling), 
 [box-vscroll] > *, box-vscroll > * {
 	width: calc(100% - 4px) !important;
 }
+[box-scroll].horizontal, box-scroll.horizontal,
 [box-hscroll], box-hscroll {
 	background-size: 100% 4px;
 }
+[box-scroll].horizontal > *:not(.infos-scrolling), box-scroll.horizontal > *:not(.infos-scrolling),
 [box-hscroll] > *, box-hscroll > * {
 	height: calc(100% - 4px) !important;
 }
+[box-scroll].vertical, box-scroll.vertical,
 [box-vscroll], box-vscroll {
 	background-position: right 0%;
 }
+[box-scroll].horizontal, box-scroll.horizontal,
 [box-hscroll], box-hscroll {
 	background-position: 0% bottom;
 }
+[box-scroll], box-scroll,
 [box-vscroll], [box-hscroll], box-vscroll, box-hscroll {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw8Zb4bSvgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12M4cOAAAASEAkEwrrB4AAAAAElFTkSuQmCC');
 }
+[box-scroll][hover], box-scroll[hover],
 [box-vscroll][hover], [box-hscroll][hover], box-vscroll[hover], box-hscroll[hover] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw83s1DfcQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12NYuXIlAAP6Afx7V39BAAAAAElFTkSuQmCC');
 }
+[box-scroll][drag], box-scroll[drag],
 [box-vscroll][drag], [box-hscroll][drag], box-vscroll[drag], box-hscroll[drag] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDxAQ2wBkhAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12OorKwEAALaAWyeCJ/eAAAAAElFTkSuQmCC');
 }
 
+[box-scroll] > span.infos-scrolling, box-scroll > span.infos-scrolling, 
 [box-hscroll] > span.infos-scrolling, box-hscroll > span.infos-scrolling,
 [box-vscroll] > span.infos-scrolling, box-vscroll > span.infos-scrolling {
 	display: inline-block;
@@ -60,15 +70,17 @@ box-vscroll, box-hscroll {
 	border-radius: 10px;
 }
 
+[box-scroll] > .scrollbar, box-scroll > .scrollbar,
 box-hscroll > .scrollbar, [box-hscroll] > .scrollbar,
 [box-vscroll] > .scrollbar, box-vscroll > .scrollbar {
 	background-repeat: no-repeat;
-	position:absolute; /*You may also use fixed depending on your needs.*/
+	position:absolute;
 	z-index: 999;
 	opacity: 0.7;
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw8Zb4bSvgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12M4cOAAAASEAkEwrrB4AAAAAElFTkSuQmCC');
 	cursor: default;
 }
+[box-scroll].horizontal > .scrollbar, box-scroll.horizontal > .scrollbar,
 box-hscroll > .scrollbar, [box-hscroll] > .scrollbar {
 	width:100%;
 	height:16px  !important;
@@ -77,6 +89,7 @@ box-hscroll > .scrollbar, [box-hscroll] > .scrollbar {
 	left:0;
 	bottom:0;
 }
+[box-scroll].vertical > .scrollbar, box-scroll.vertical > .scrollbar, 
 [box-vscroll] > .scrollbar, box-vscroll > .scrollbar {
 	width:16px  !important;
 	height:100%;
@@ -86,18 +99,21 @@ box-hscroll > .scrollbar, [box-hscroll] > .scrollbar {
 	top:0;
 }
 
+[box-scroll] > .scrollbar[mode='hidden'], box-scroll > .scrollbar[mode='hidden'],
 box-hscroll > .scrollbar[mode='hidden'],
 [box-hscroll] > .scrollbar[mode='hidden'],
 box-vscroll > .scrollbar[mode='hidden'],
 [box-vscroll] > .scrollbar[mode='hidden'] {
 	display: none;
 }
+[box-scroll] > .scrollbar[mode='hover'], box-scroll > .scrollbar[mode='hover'],
 box-hscroll > .scrollbar[mode='hover'],
 [box-hscroll] > .scrollbar[mode='hover'],
 box-vscroll > .scrollbar[mode='hover'],
 [box-vscroll] > .scrollbar[mode='hover'] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gEZDw83s1DfcQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12NYuXIlAAP6Afx7V39BAAAAAElFTkSuQmCC');
 }
+[box-scroll] > .scrollbar[mode='drag'], box-scroll > .scrollbar[mode='drag'],
 box-hscroll > .scrollbar[mode='drag'],
 [box-hscroll] > .scrollbar[mode='drag'],
 box-vscroll > .scrollbar[mode='drag'],
