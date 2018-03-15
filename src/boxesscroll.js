@@ -132,6 +132,9 @@
 			ctrl.ngsb.on("mouseup", function (event) { // on stop l'inc/dec des pages
 				mouseup();
 			});
+			ctrl.ngsb.on("click", function (event) { // desactive la propagation entre autrepour eviter la fermeture des popup
+   			boxesScrollServices.stopEvent(event);
+         });
 			ctrl.ngelt.on("mousemove", function (event) { // on définit la couleur du grabber
 				boxesScrollServices.execAndApplyIfScrollable($scope, this, mousemove, [event]);
 			});
