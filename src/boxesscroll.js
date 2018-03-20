@@ -4,7 +4,7 @@
 	var SCROLLBY = 1;
 	var GRABBERMIN = 15;
 	'use strict';
-	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices)
+	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices).constant('bsToSurvey', {objs: [], promise:null})
 			  .directive('boxVscroll', BoxVscroll).directive('boxHscroll', BoxHscroll).directive('boxScroll', BoxScroll);
 	var scope = {
 		'total': '<',
@@ -17,19 +17,19 @@
 //		'position':'<' // reverse ou both
 	};
 	/* @ngInject */
-	function BoxScroll($timeout, $interval, $compile) {
+	function BoxScroll($timeout, $interval, $compile, bsToSurvey) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
 			controllerAs: 'ctrl',
 			scope: scope,
 			link: function (scope, ngelt, attrs, ctrl) {
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl);
+				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey);
 			}
 		};
 	}
 	/* @ngInject */
-	function BoxVscroll($timeout, $interval, $compile) {
+	function BoxVscroll($timeout, $interval, $compile, bsToSurvey) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
@@ -37,12 +37,12 @@
 			scope: scope,
 			link: function (scope, ngelt, attrs, ctrl) {
 				ctrl.horizontal = false;
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl);
+				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey);
 			}
 		};
 	}
 	/* @ngInject */
-	function BoxHscroll($timeout, $interval, $compile) {
+	function BoxHscroll($timeout, $interval, $compile, bsToSurvey) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
@@ -50,7 +50,7 @@
 			scope: scope,
 			link: function (scope, ngelt, attrs, ctrl) {
 				ctrl.horizontal = true;
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl);
+				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey);
 			}
 		};
 	}
@@ -133,8 +133,8 @@
 				mouseup();
 			});
 			ctrl.ngsb.on("click", function (event) { // desactive la propagation entre autrepour eviter la fermeture des popup
-   			boxesScrollServices.stopEvent(event);
-         });
+				boxesScrollServices.stopEvent(event);
+			});
 			ctrl.ngelt.on("mousemove", function (event) { // on définit la couleur du grabber
 				boxesScrollServices.execAndApplyIfScrollable($scope, this, mousemove, [event]);
 			});
@@ -161,7 +161,7 @@
 				$timeout.cancel(infosTimer);
 			}
 			ctrl.infos = null;
-			if (!isNaN($scope.ngBegin) && !isNaN($scope.ngLimit) && !isNaN($scope.total)) {
+			if (!isNaN($scope.ngBegin) && !isNaN($scope.ngLimit) && !isNaN($scope.total) && $scope.total > 1) {
 				var from = $scope.total ? $scope.ngBegin + 1 : 0;
 				var to = $scope.ngBegin + boxesScrollServices.minXmax(0, ctrl.getInnerLimit(), $scope.total);
 				ctrl.infos = "[" + from + "-" + to + "]/" + $scope.total;
@@ -198,7 +198,7 @@
 		function updateBegin() {
 			moveGrabber(getGrabberOffsetPercentFromBegin($scope.ngBegin));
 			adjustLimit();
-			updateGrabberSizes();
+//			updateGrabberSizes();
 			updateInfos();
 		}
 		/**
@@ -477,14 +477,11 @@
 				$scope.ngLimit = $scope.max;
 			} else if ($scope.total) {
 				if (items.length) {
-					var size = 0;
-					var empty = 0;
-					size = [].reduce.call(items, function (accu, item) {
-						var h = ctrl.horizontal ? getArea(item).width : getArea(item).height;
-						return accu + h;
-					}, 0);
+					var size = ctrl.horizontal ?
+							  getArea(items[items.length - 1]).right - getArea(items[0]).left :
+							  getArea(items[items.length - 1]).bottom - getArea(items[0]).top;
 					var offset = getOffsetPixelContainerBeforeItem(items[0]); // on ignore les éléments avant
-					empty = getHeightArea() - offset - size;
+					var empty = getHeightArea() - offset - size;
 					var inc = 0;
 					var average = size / items.length;
 					if (average) { // protect div par 0
@@ -512,8 +509,8 @@
 					ctrl.ngelt.removeClass('horizontal');
 					ctrl.ngelt.removeClass('vertical');
 					var inlineElt = display.indexOf('inline') !== -1;
-					if(inlineElt || inlineDisplays.indexOf(display) !== -1) {
-						if(inlineElt) {
+					if (inlineElt || inlineDisplays.indexOf(display) !== -1) {
+						if (inlineElt) {
 							ctrl.ngelt.css('display', 'flex');
 						}
 						ctrl.ngelt.addClass('horizontal');
@@ -566,7 +563,7 @@
 			if (percent && $scope.total) {
 				var grabberSizePercent = getGrabberSizePercentFromScopeValues();
 				var grabberOffsetPercent = boxesScrollServices.minXmax(0, percent, 100 - grabberSizePercent);
-				var offset = getGrabberOffsetPixelFromPercent(grabberOffsetPercent);
+				offset = getGrabberOffsetPixelFromPercent(grabberOffsetPercent);
 				var grabberSize = getGrabberSizePixelFromPercent(grabberSizePercent);
 				if (offset >= getHeightArea() - grabberSize) {
 					offset = getHeightArea() - grabberSize;
@@ -639,47 +636,58 @@
 		 * Retourne la zone correspondante à l'indicateur de position de la scrollbar, permet aussi de faire apparaitre la scrollbar au survol
 		 * @return {Rectangle}
 		 */
+		var triggerArea = getNullArea();
 		function getTriggerArea() {
-			var clientRect = ctrl.elt.getClientRects();
-			if (clientRect && clientRect.length) {
-				var rect = clientRect[0];
-				if (rect) {
-					// zone de la scrollbar
-					var bgSize = ctrl.ngelt.css('background-size');
-					if (ctrl.horizontal) {
-						var m = bgSize.match(/\D*\d+\D*(\d+)\D*/);
-						var s = m.length > 0 ? parseInt(m[1]) : 4;
-						return {
-							left: rect.left, right: rect.right,
-							width: rect.width, height: s,
-							top: rect.bottom - s, bottom: rect.bottom
-						};
-					} else {
-						var m = bgSize.match(/\D*(\d+)\D*\d+\D*/);
-						var s = m.length > 0 ? parseInt(m[1]) : 4;
-						return {
-							left: rect.right - s, right: rect.right,
-							width: s, height: rect.height,
-							top: rect.top, bottom: rect.bottom
-						};
+			if (triggerArea.invalid) {
+				var clientRect = ctrl.elt.getClientRects();
+				if (clientRect && clientRect.length) {
+					var rect = clientRect[0];
+					if (rect) {
+						// zone de la scrollbar
+						var bgSize = ctrl.ngelt.css('background-size');
+						if (ctrl.horizontal) {
+							var m = bgSize.match(/\D*\d+\D*(\d+)\D*/);
+							var s = m.length > 0 ? parseInt(m[1]) : 4;
+							triggerArea = {
+								left: rect.left, right: rect.right,
+								width: rect.width, height: s,
+								top: rect.bottom - s, bottom: rect.bottom
+							};
+						} else {
+							var m = bgSize.match(/\D*(\d+)\D*\d+\D*/);
+							var s = m.length > 0 ? parseInt(m[1]) : 4;
+							triggerArea = {
+								left: rect.right - s, right: rect.right,
+								width: s, height: rect.height,
+								top: rect.top, bottom: rect.bottom
+							};
+						}
 					}
 				}
 			}
-			return getNullArea();
+			return triggerArea;
 		}
 		/**
 		 * Retourne la zone correspondante à la scrollbar
 		 * @return {Rectangle}
 		 */
+		var sbArea = getNullArea();
 		function getScrollbarArea() {
-			return getArea(ctrl.sb);
+			if (sbArea.invalid) {
+				sbArea = getArea(ctrl.sb);
+			}
+			return sbArea;
 		}
 		/**
 		 * Retourne la zone correspondante à la directive
 		 * @return {Rectangle}
 		 */
+		var eltArea = getNullArea();
 		function getEltArea() {
-			return getArea(ctrl.elt);
+			if (eltArea.invalid) {
+				eltArea = getArea(ctrl.elt);
+			}
+			return eltArea;
 		}
 		/**
 		 * Retourne la zone correspondante à l'element html en argument
@@ -701,7 +709,7 @@
 		 * @return {Rectangle}
 		 */
 		function getNullArea() {
-			return {left: 0, right: 0, width: 0, height: 0, top: 0, bottom: 0};
+			return {left: 0, right: 0, width: 0, height: 0, top: 0, bottom: 0, invalid: true};
 		}
 	}
 	/**
@@ -721,8 +729,9 @@
 	 * @param {type} ngelt
 	 * @param {type} attrs
 	 * @param {type} ctrl
+	 * @param {constant} bsToSurvey
 	 */
-	function link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl) {
+	function link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey) {
 		ctrl.reItems = new RegExp("\s?limitTo\s?\:\s?" + attrs.ngLimit + "\s?\:\s?" + attrs.ngBegin + ""); // pour déterminer quel items sont gerer
 		scope.ngBegin = 0;
 		scope.ngLimit = 1;
@@ -734,19 +743,19 @@
 		ngelt.append(ctrl.ngsb);
 		ctrl.sb = getHtmlElement(ctrl.ngsb);
 		var watcherClears = [];
-		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display 
-			var previous = {value: 'none'};
-			$interval(function (prev, s) {
-				var d = ctrl.ngelt.css('display');
-				if (d !== prev.value) {
-					updateDisplay(d, prev.value, s);
-					prev.value = d;
-				}
-			}, 100, 0, true, previous, scope);
-//			watcherClears.push(scope.$watch(function (scope) {
-//				console.log("read display");
-//				return ctrl.ngelt.css('display');
-//			}, updateDisplay));
+		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display via un $interval global
+			bsToSurvey.objs.push({prev:'none', scope:scope, elt:ngelt, updateFunc:updateDisplay});
+			if(!bsToSurvey.handler) {
+				bsToSurvey.promise = $interval(function () {
+					bsToSurvey.objs.forEach(function(obj) {
+						var d = obj.elt.css('display');
+						if(d !== obj.prev) {
+							obj.prev = d;
+							obj.updateFunc(d, obj.scope);
+						}
+					});
+				}, 300, 0, true, bsToSurvey);
+			}
 		}
 		if (ctrl.horizontal) {
 			watcherClears.push(scope.$watch(function (scope) {
@@ -784,10 +793,23 @@
 			watcherClears.forEach(function (watcherClear) {
 				watcherClear();
 			});
+			var index = -1;
+			bsToSurvey.objs.forEach(function(item, idx) {
+				if(item.scope.$id === scope.$id) {
+					index = idx;
+				}
+			});
+			if(index !== -1) {
+				bsToSurvey.objs.splice(index, 1);
+			}
+			if(!bsToSurvey.objs.length && bsToSurvey.promise) {
+				$interval.cancel(bsToSurvey.promise);
+				bsToSurvey.promise = null;
+			}
 		});
 		ctrl.addEventListeners();
-		function updateDisplay(v1, v2, s) {
-			if (v1 !== 'none') {
+		function updateDisplay(display, s) {
+			if (display !== 'none') {
 				if (scope.max) {
 					s.ngLimit = s.max;
 					s.ctrl.updateTotal();
