@@ -747,7 +747,7 @@
 		var watcherClears = [];
 		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display via un $interval global
 			bsToSurvey.objs.push({prev:'none', scope:scope, elt:ngelt, updateFunc:updateDisplay});
-			if(!bsToSurvey.handler) {
+			if(!bsToSurvey.promise) {
 				bsToSurvey.promise = $interval(function () {
 					bsToSurvey.objs.forEach(function(obj) {
 						var d = obj.elt.css('display');
