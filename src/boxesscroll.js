@@ -78,6 +78,8 @@
 		ctrl.updateBegin = updateBegin;
 		ctrl.updateSize = updateSize;
 		ctrl.getInnerLimit = getInnerLimit;
+		ctrl.getEltArea = getEltArea;
+		ctrl.getScrollbarArea = getScrollbarArea;
 
 		/**
 		 * Retourne la limit pour les calcul interne, cad le nombre d'items vraiment visible
@@ -761,13 +763,21 @@
 			watcherClears.push(scope.$watch(function (scope) {
 				return scope.ctrl.ngelt.width();
 			}, function (v1, v2, s) {
-				s.ctrl.updateSize();
+				if(v1 !== v2) {
+					s.ctrl.getScrollbarArea().invalid = true;
+					s.ctrl.getEltArea().invalid = true;
+					s.ctrl.updateSize();
+				}
 			}));
 		} else {
 			watcherClears.push(scope.$watch(function (scope) {
 				return scope.ctrl.ngelt.height();
 			}, function (v1, v2, s) {
-				s.ctrl.updateSize();
+				if(v1 !== v2) {
+					s.ctrl.getScrollbarArea().invalid = true;
+					s.ctrl.getEltArea().invalid = true;
+					s.ctrl.updateSize();
+				}
 			}));
 		}
 		watcherClears.push(scope.$watch('total', function (v1, v2, s) {
