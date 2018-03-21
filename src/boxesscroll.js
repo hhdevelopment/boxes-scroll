@@ -4,7 +4,7 @@
 	var SCROLLBY = 1;
 	var GRABBERMIN = 15;
 	'use strict';
-	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices).constant('bsToSurvey', {objs: [], promise:null})
+	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices).constant('bsToSurvey', {objs: [], promise: null})
 			  .directive('boxVscroll', BoxVscroll).directive('boxHscroll', BoxHscroll).directive('boxScroll', BoxScroll);
 	var scope = {
 		'total': '<',
@@ -615,7 +615,7 @@
 			return Math.max(getHeightArea() * percentSize / 100, GRABBERMIN);
 		}
 		/**
-		 * Retourne l'ffset en pixel avant l'item
+		 * Retourne l'offset en pixel avant l'item
 		 * Typiquement la taille du header dans un tableau 
 		 * @param {HtmlElement} item
 		 * @returns {number}
@@ -676,7 +676,7 @@
 		var sbArea = getNullArea();
 		function getScrollbarArea() {
 			if (sbArea.invalid) {
-				sbArea = getArea(ctrl.sb);
+				sbArea = getArea(ctrl.sb, true);
 			}
 			return sbArea;
 		}
@@ -687,24 +687,34 @@
 		var eltArea = getNullArea();
 		function getEltArea() {
 			if (eltArea.invalid) {
-				eltArea = getArea(ctrl.elt);
+				eltArea = getArea(ctrl.elt, true);
 			}
 			return eltArea;
 		}
 		/**
 		 * Retourne la zone correspondante à l'element html en argument
 		 * @param {HTMLElement} elt
+		 * @param {boolean} validation
 		 * @return {Rectangle}
 		 */
-		function getArea(elt) {
+		function getArea(elt, validation) {
 			var clientRect = elt.getClientRects();
 			if (clientRect && clientRect.length) {
 				var rect = clientRect[0];
 				if (rect) {
+					rect.invalid = validation && !isElementInViewport(rect);
 					return rect;
 				}
 			}
 			return getNullArea();
+		}
+		function isElementInViewport(rect) {
+			return (
+				rect.top >= 0 &&
+				rect.left >= 0 &&
+				rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+				rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+			);
 		}
 		/**
 		 * Retourne un rectangle de valeurs 0
@@ -746,15 +756,20 @@
 		ctrl.sb = getHtmlElement(ctrl.ngsb);
 		var watcherClears = [];
 		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display via un $interval global
-			bsToSurvey.objs.push({prev:'none', scope:scope, elt:ngelt, updateFunc:updateDisplay});
-			if(!bsToSurvey.promise) {
+			bsToSurvey.objs.push({scope: scope, updateFunc: updateDisplay});
+			if (!bsToSurvey.promise) {
 				bsToSurvey.promise = $interval(function () {
-					bsToSurvey.objs.forEach(function(obj) {
-						var d = obj.elt.css('display');
-						if(d !== obj.prev) {
-							obj.prev = d;
-							obj.updateFunc(d, obj.scope);
+					var toRemove = [];
+					bsToSurvey.objs.forEach(function (obj) {
+						if (d !== 'none') {
+							var s = obj.scope;
+							var d = s.ctrl.ngelt.css('display');
+							obj.updateFunc(d, s);
+							toRemove.push(s.$id);
 						}
+					});
+					toRemove.forEach(function (id) {
+						removeObjToSurvey(id, bsToSurvey);
 					});
 				}, 300, 0, true, bsToSurvey);
 			}
@@ -763,7 +778,7 @@
 			watcherClears.push(scope.$watch(function (scope) {
 				return scope.ctrl.ngelt.width();
 			}, function (v1, v2, s) {
-				if(v1 !== v2) {
+				if (v1 !== v2) {
 					s.ctrl.getScrollbarArea().invalid = true;
 					s.ctrl.getEltArea().invalid = true;
 					s.ctrl.updateSize();
@@ -773,7 +788,7 @@
 			watcherClears.push(scope.$watch(function (scope) {
 				return scope.ctrl.ngelt.height();
 			}, function (v1, v2, s) {
-				if(v1 !== v2) {
+				if (v1 !== v2) {
 					s.ctrl.getScrollbarArea().invalid = true;
 					s.ctrl.getEltArea().invalid = true;
 					s.ctrl.updateSize();
@@ -803,20 +818,23 @@
 			watcherClears.forEach(function (watcherClear) {
 				watcherClear();
 			});
+			removeObjToSurvey(scope.$id, bsToSurvey);
+		});
+		function removeObjToSurvey(id, bsToSurvey) {
 			var index = -1;
-			bsToSurvey.objs.forEach(function(item, idx) {
-				if(item.scope.$id === scope.$id) {
+			bsToSurvey.objs.forEach(function (item, idx) {
+				if (item.scope.$id === id) {
 					index = idx;
 				}
 			});
-			if(index !== -1) {
+			if (index !== -1) {
 				bsToSurvey.objs.splice(index, 1);
 			}
-			if(!bsToSurvey.objs.length && bsToSurvey.promise) {
+			if (!bsToSurvey.objs.length && bsToSurvey.promise) {
 				$interval.cancel(bsToSurvey.promise);
 				bsToSurvey.promise = null;
 			}
-		});
+		}
 		ctrl.addEventListeners();
 		function updateDisplay(display, s) {
 			if (display !== 'none') {
