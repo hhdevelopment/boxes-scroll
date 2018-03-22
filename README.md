@@ -57,8 +57,8 @@ $ npm install boxes-scroll
 When you are done downloading all the dependencies and project files the only remaining part is to add dependencies on the `scroll-box` AngularJS module:
 
 ```js
-require('./node_modules/ng-infinity-scroll/dist/boxesscroll.css');
-require('./node_modules/ng-infinity-scroll/dist/boxesscroll.js');
+require('./node_modules/boxes-scroll/dist/boxesscroll.css');
+require('./node_modules/boxes-scroll/dist/boxesscroll.js');
 ```
 
 ```js
