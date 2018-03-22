@@ -4,7 +4,7 @@
 	var SCROLLBY = 1;
 	var GRABBERMIN = 15;
 	'use strict';
-	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices).constant('bsToSurvey', {objs: [], promise: null})
+	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices)
 			  .directive('boxVscroll', BoxVscroll).directive('boxHscroll', BoxHscroll).directive('boxScroll', BoxScroll);
 	var scope = {
 		'total': '<',
@@ -17,19 +17,19 @@
 //		'position':'<' // reverse ou both
 	};
 	/* @ngInject */
-	function BoxScroll($timeout, $interval, $compile, bsToSurvey) {
+	function BoxScroll($timeout, $compile) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
 			controllerAs: 'ctrl',
 			scope: scope,
 			link: function (scope, ngelt, attrs, ctrl) {
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey);
+				link($timeout, $compile, scope, ngelt, attrs, ctrl);
 			}
 		};
 	}
 	/* @ngInject */
-	function BoxVscroll($timeout, $interval, $compile, bsToSurvey) {
+	function BoxVscroll($timeout, $compile) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
@@ -37,12 +37,12 @@
 			scope: scope,
 			link: function (scope, ngelt, attrs, ctrl) {
 				ctrl.horizontal = false;
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey);
+				link($timeout, $compile, scope, ngelt, attrs, ctrl);
 			}
 		};
 	}
 	/* @ngInject */
-	function BoxHscroll($timeout, $interval, $compile, bsToSurvey) {
+	function BoxHscroll($timeout, $compile) {
 		return {
 			restrict: 'EA',
 			controller: BoxScrollCtrl,
@@ -50,7 +50,7 @@
 			scope: scope,
 			link: function (scope, ngelt, attrs, ctrl) {
 				ctrl.horizontal = true;
-				link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey);
+				link($timeout, $compile, scope, ngelt, attrs, ctrl);
 			}
 		};
 	}
@@ -709,12 +709,11 @@
 			return getNullArea();
 		}
 		function isElementInViewport(rect) {
-			return (
-				rect.top >= 0 &&
-				rect.left >= 0 &&
-				rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-				rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-			);
+			if (ctrl.horizontal) {
+				return rect.left >= 0 && rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+			} else {
+				return rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+			}
 		}
 		/**
 		 * Retourne un rectangle de valeurs 0
@@ -735,15 +734,13 @@
 	/**
 	 * Fonction de link de la directive, indépendant du sens du scroll
 	 * @param {type} $timeout
-	 * @param {type} $interval
 	 * @param {type} $compile
 	 * @param {type} scope
 	 * @param {type} ngelt
 	 * @param {type} attrs
 	 * @param {type} ctrl
-	 * @param {constant} bsToSurvey
 	 */
-	function link($timeout, $interval, $compile, scope, ngelt, attrs, ctrl, bsToSurvey) {
+	function link($timeout, $compile, scope, ngelt, attrs, ctrl) {
 		ctrl.reItems = new RegExp("\s?limitTo\s?\:\s?" + attrs.ngLimit + "\s?\:\s?" + attrs.ngBegin + ""); // pour déterminer quel items sont gerer
 		scope.ngBegin = 0;
 		scope.ngLimit = 1;
@@ -756,23 +753,21 @@
 		ctrl.sb = getHtmlElement(ctrl.ngsb);
 		var watcherClears = [];
 		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display via un $interval global
-			bsToSurvey.objs.push({scope: scope, updateFunc: updateDisplay});
-			if (!bsToSurvey.promise) {
-				bsToSurvey.promise = $interval(function () {
-					var toRemove = [];
-					bsToSurvey.objs.forEach(function (obj) {
-						if (d !== 'none') {
-							var s = obj.scope;
-							var d = s.ctrl.ngelt.css('display');
-							obj.updateFunc(d, s);
-							toRemove.push(s.$id);
-						}
-					});
-					toRemove.forEach(function (id) {
-						removeObjToSurvey(id, bsToSurvey);
-					});
-				}, 300, 0, true, bsToSurvey);
-			}
+			var watcherClear = scope.$watch(function (scope) {
+				return scope.ctrl.ngelt.css('display');
+			}, function (v1, v2, s) {
+				if (v1 !== 'none') {
+					if (s.max) {
+						s.ngLimit = s.max;
+						s.ctrl.updateTotal();
+					} else {
+						s.ngLimit = 1;
+						s.ctrl.updateSize();
+					}
+					watcherClear();
+				}
+			});
+			watcherClears.push(watcherClear);
 		}
 		if (ctrl.horizontal) {
 			watcherClears.push(scope.$watch(function (scope) {
@@ -818,35 +813,8 @@
 			watcherClears.forEach(function (watcherClear) {
 				watcherClear();
 			});
-			removeObjToSurvey(scope.$id, bsToSurvey);
 		});
-		function removeObjToSurvey(id, bsToSurvey) {
-			var index = -1;
-			bsToSurvey.objs.forEach(function (item, idx) {
-				if (item.scope.$id === id) {
-					index = idx;
-				}
-			});
-			if (index !== -1) {
-				bsToSurvey.objs.splice(index, 1);
-			}
-			if (!bsToSurvey.objs.length && bsToSurvey.promise) {
-				$interval.cancel(bsToSurvey.promise);
-				bsToSurvey.promise = null;
-			}
-		}
 		ctrl.addEventListeners();
-		function updateDisplay(display, s) {
-			if (display !== 'none') {
-				if (scope.max) {
-					s.ngLimit = s.max;
-					s.ctrl.updateTotal();
-				} else {
-					s.ngLimit = 1;
-					s.ctrl.updateSize();
-				}
-			}
-		}
 	}
 	function boxesScrollServices() {
 		return {
