@@ -29,6 +29,7 @@
   },
   "scripts": {
     "webpack": "webpack --progress --profile --colors",
-    "watch": "webpack --progress --profile --watch"
+    "webpack-local": "webpack --progress --profile --colors --env.DEV",
+    "watch": "webpack --progress --profile --watch --env.DEV"
   }
 }

@@ -6,7 +6,7 @@ module.exports = function (env) {
 		},
 		output: {
 			filename: 'index.js',
-			path: __dirname + '/dist'
+ 			path: __dirname + env.DEV?'/../websites/boxes-scroll/node_modules/boxes-scroll/dist':'/dist'
 		},
 		module: {
 			rules: [
