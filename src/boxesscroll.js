@@ -1,7 +1,7 @@
 (function (ng) {
 	var DEBOUNCE = 100;
 	var SHOWSB_TIMEOUT = 500;
-	var SCROLLBY = 1;
+	var SCROLLBY = 3;
 	var GRABBERMIN = 15;
 	'use strict';
 	ng.module('boxes.scroll', []).factory('boxesScrollServices', boxesScrollServices)
@@ -71,6 +71,7 @@
 		ctrl.elt; // le composant lui meme
 		ctrl.infos = null;
 
+		ctrl.removeEventListeners = removeEventListeners; // gestion des events
 		ctrl.addEventListeners = addEventListeners; // gestion des events
 		ctrl.updateInfos = updateInfos; // met a jours les infos 
 		ctrl.updateTotal = updateTotal;
@@ -111,48 +112,59 @@
 			var fix = ($scope.ngLimit - items.length) + notInDeck;
 			return $scope.max ? $scope.ngLimit : $scope.ngLimit - fix;
 		}
+		var hasFocus = false;
 		/**
-		 * Ajoute tous les handlers
+		 * Ajoute et Supprime tous les handlers
 		 */
 		function addEventListeners() {
-			var hasFocus = false;
-			ctrl.ngelt.on('wheel', function (event) {
-				boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
-			});
+			ctrl.ngelt.on('wheel', wheelOnElt);
 //			ctrl.elt.addEventListener("wheel", function (event) {
 //				boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
 //			}, {passive: true, capture: true});
-			ctrl.ngsb.on("mouseout", function (event) {
-				if (!isDragMode()) {
-					hideScrollbar(SHOWSB_TIMEOUT);
-				}
-			});
-			ctrl.ngsb.on("mousedown", function (event) { // sur le mousedown, si dans le grabber, on init le mode drag, sinon on inc/dec les pages tant que l'on est appuyé
-				hasFocus = true;
-				boxesScrollServices.execAndApplyIfScrollable($scope, this, mousedown, [event]);
-			});
-			ctrl.ngsb.on("mouseup", function (event) { // on stop l'inc/dec des pages
-				mouseup();
-			});
-			ctrl.ngsb.on("click", function (event) { // desactive la propagation entre autrepour eviter la fermeture des popup
-				boxesScrollServices.stopEvent(event);
-			});
-			ctrl.ngelt.on("mousemove", function (event) { // on définit la couleur du grabber
-				boxesScrollServices.execAndApplyIfScrollable($scope, this, mousemove, [event]);
-			});
+			ctrl.ngsb.on("mouseout", mouseoutOnSb);
+			ctrl.ngsb.on("mousedown", mousedownOnSb); // sur le mousedown, si dans le grabber, on init le mode drag, sinon on inc/dec les pages tant que l'on est appuyé
+			ctrl.ngsb.on("mouseup", mouseup);  // on stop l'inc/dec des pages
+			ctrl.ngsb.on("click", boxesScrollServices.stopEvent); // desactive la propagation entre autrepour eviter la fermeture des popup
+			ctrl.ngelt.on("mousemove", mousemoveOnElt); // on définit la couleur du grabber
 			if (!ctrl.ngelt.css('display') !== 'none') { // si c'est une popup, le resize de l'ecran ne joue pas
-				ng.element($window).on("resize", function (event) {
-					updateSize();
-				});
+				ng.element($window).on("resize", updateSize);
 			}
-			$document.on("mousedown", function (event) {
-				hasFocus = ctrl.elt.contains(event.target);
-			});
-			$document.on("keydown", function (event) {
-				if (!$scope.allowKeynav || !hasFocus || event.which < 33 || event.which > 40)
-					return;
-				boxesScrollServices.execAndApplyIfScrollable($scope, this, keydown, [event]);
-			});
+			$document.on("mousedown", mousedownOnDoc);
+			$document.on("keydown", keydownOnOnDoc);
+		}
+		function removeEventListeners() {
+			ctrl.ngelt.off('wheel', wheelOnElt);
+			ctrl.ngsb.off("mouseout", mouseoutOnSb);
+			ctrl.ngsb.off("mousedown", mousedownOnSb);
+			ctrl.ngsb.off("mouseup", mouseup);
+			ctrl.ngsb.off("click", boxesScrollServices.stopEvent);
+			ctrl.ngelt.off("mousemove", mousemoveOnElt);
+			ng.element($window).off("resize", updateSize);
+			$document.off("mousedown", mousedownOnDoc);
+			$document.off("keydown", keydownOnOnDoc);
+		}
+		function keydownOnOnDoc(event) {
+			if (!$scope.allowKeynav || !hasFocus || event.which < 33 || event.which > 40)
+				return;
+			boxesScrollServices.execAndApplyIfScrollable($scope, this, keydown, [event]);
+		};
+		function mousedownOnDoc(event) {
+			hasFocus = ctrl.elt.contains(event.target);
+		}
+		function mousemoveOnElt(event) {
+			boxesScrollServices.execAndApplyIfScrollable($scope, this, mousemove, [event]);
+		}
+		function mousedownOnSb(event) {
+			hasFocus = true;
+			boxesScrollServices.execAndApplyIfScrollable($scope, this, mousedown, [event]);
+		}
+		function mouseoutOnSb(event) {
+			if (!isDragMode()) {
+				hideScrollbar(SHOWSB_TIMEOUT);
+			}
+		}
+		function wheelOnElt(event) {
+			boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
 		}
 		/**
 		 * begin, limit ou total on changés
@@ -810,6 +822,7 @@
 			}
 		}));
 		scope.$on('$destroy', function () {
+			ctrl.removeEventListeners();
 			watcherClears.forEach(function (watcherClear) {
 				watcherClear();
 			});

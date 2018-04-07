@@ -1,4 +1,6 @@
 module.exports = function (env) {
+	var dist = (env&&env.DEV?'/../websites/boxes-scroll/node_modules/boxes-scroll/dist':'/dist');
+	console.log("Build to", dist);
 	return {
 		context: __dirname + '/src',
 		entry: {
@@ -6,7 +8,7 @@ module.exports = function (env) {
 		},
 		output: {
 			filename: 'index.js',
- 			path: __dirname + env.DEV?'/../websites/boxes-scroll/node_modules/boxes-scroll/dist':'/dist'
+ 			path: __dirname + dist
 		},
 		module: {
 			rules: [
