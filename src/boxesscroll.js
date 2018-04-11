@@ -555,14 +555,17 @@
 				var bgSizeElt = ctrl.ngelt.css('background-size');
 				var bgSizeSb = ctrl.ngsb.css('background-size');
 
-				var grabbersizePixel = getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues());
+				var grabbersizePixel = '100%';
+				if(getInnerLimit() !== $scope.total) {
+					grabbersizePixel = getGrabberSizePixelFromPercent(getGrabberSizePercentFromScopeValues())+'px';
+				}
 
 				if (ctrl.horizontal) {
-					bgSizeElt = bgSizeElt.replace(/.*\s+/, grabbersizePixel + 'px ');
-					bgSizeSb = bgSizeSb.replace(/.*\s+/, grabbersizePixel + 'px ');
+					bgSizeElt = bgSizeElt.replace(/.*\s+/, grabbersizePixel + ' ');
+					bgSizeSb = bgSizeSb.replace(/.*\s+/, grabbersizePixel + ' ');
 				} else {
-					bgSizeElt = bgSizeElt.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel + 'px');
-					bgSizeSb = bgSizeSb.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel + 'px');
+					bgSizeElt = bgSizeElt.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel);
+					bgSizeSb = bgSizeSb.replace(/px\s+\d+(\.\d+)*.*/, 'px ' + grabbersizePixel);
 				}
 				ctrl.ngelt.css({'background-size': bgSizeElt});
 				ctrl.ngsb.css({'background-size': bgSizeSb});
