@@ -825,7 +825,6 @@
 			}
 		}));
 		scope.$on('$destroy', function () {
-			ngelt.empty();
 			ctrl.removeEventListeners();
 			watcherClears.forEach(function (watcherClear) {
 				watcherClear();
