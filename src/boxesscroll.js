@@ -118,6 +118,7 @@
 		 */
 		function addEventListeners() {
 			ctrl.ngelt.on('wheel', wheelOnElt);
+			ctrl.ngelt.on('computegrabbersizes', ctrl.updateSize);
 //			ctrl.elt.addEventListener("wheel", function (event) {
 //				boxesScrollServices.execAndApplyIfScrollable($scope, this, wheel, [event]);
 //			}, {passive: true, capture: true});
@@ -134,6 +135,7 @@
 		}
 		function removeEventListeners() {
 			ctrl.ngelt.off('wheel', wheelOnElt);
+			ctrl.ngelt.off('computegrabbersizes', ctrl.updateSize);
 			ctrl.ngsb.off("mouseout", mouseoutOnSb);
 			ctrl.ngsb.off("mousedown", mousedownOnSb);
 			ctrl.ngsb.off("mouseup", mouseup);
