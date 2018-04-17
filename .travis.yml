@@ -17,8 +17,8 @@ before_script:
 script: 
   - webpack
 deploy:
-  - provider: script
-    script: ls public_html; lftp sftp://$SFTP_1AND1_HOST -u $SFTP_1AND1_USER,$SFTP_1AND1_PWD -e "lcd public_html; cd $REPO_NAME; mrm **/*; mirror -e -R; bye"
+  - provider: heroku
+    api_key: $HEKOKU_API_KEY
     skip_cleanup: true
     on:
       branch: website
