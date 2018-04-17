@@ -20,5 +20,7 @@ deploy:
   - provider: heroku
     api_key: $HEKOKU_API_KEY
     skip_cleanup: true
+    run:
+      - "webpack"
     on:
       branch: website
