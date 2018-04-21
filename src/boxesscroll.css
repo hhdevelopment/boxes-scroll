@@ -60,7 +60,7 @@ box-scroll.horizontal, box-hscroll {
 	height: auto !important;
 	position:absolute;
 	bottom:10px;
-	right:10px;
+	right:20px;
 	z-index: 1000;
 	min-width: 10px;
 	padding: 3px 7px;

@@ -132,6 +132,7 @@
 			}
 			$document.on("mousedown", mousedownOnDoc);
 			$document.on("keydown", keydownOnOnDoc);
+			$document.on("scroll", invalidSizes);
 		}
 		function removeEventListeners() {
 			ctrl.ngelt.off('wheel', wheelOnElt);
@@ -144,6 +145,11 @@
 			ng.element($window).off("resize", updateSize);
 			$document.off("mousedown", mousedownOnDoc);
 			$document.off("keydown", keydownOnOnDoc);
+			$document.off("scroll", invalidSizes);
+		}
+		function invalidSizes(event) {
+			ctrl.getScrollbarArea().invalid = true;
+			ctrl.getEltArea().invalid = true;
 		}
 		function keydownOnOnDoc(event) {
 			if (!$scope.allowKeynav || !hasFocus || event.which < 33 || event.which > 40)
@@ -492,14 +498,17 @@
 			if ($scope.max) {
 				$scope.ngLimit = $scope.max;
 			} else if ($scope.total) {
-				if (items.length) {
-					var size = ctrl.horizontal ?
-							  getArea(items[items.length - 1]).right - getArea(items[0]).left :
-							  getArea(items[items.length - 1]).bottom - getArea(items[0]).top;
-					var offset = getOffsetPixelContainerBeforeItem(items[0]); // on ignore les éléments avant
-					var empty = getHeightArea() - offset - size;
+				var nbItems = items.length;
+				if (nbItems) {
+					var firstItem = items[0];
+					var lastItem = items[nbItems - 1];
+					var containerSize = ctrl.horizontal ?
+							  getArea(lastItem).right - getArea(firstItem).left :
+							  getArea(lastItem).bottom - getArea(firstItem).top;
+					var offset = getOffsetPixelContainerBeforeItem(firstItem); // on ignore les éléments avant
+					var empty = getHeightArea() - offset - containerSize; // zone non remplie
 					var inc = 0;
-					var average = size / items.length;
+					var average = containerSize / nbItems;
 					if (average) { // protect div par 0
 						var floatValue = empty / average;
 						inc = floatValue < 0 ? Math.ceil(floatValue) : Math.ceil(floatValue); // on veut en voir une de plus
@@ -769,7 +778,7 @@
 		ngelt.append(ctrl.ngsb);
 		ctrl.sb = getHtmlElement(ctrl.ngsb);
 		var watcherClears = [];
-		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display via un $interval global
+		if (ngelt.css('display') === 'none') { // si c'est une popup, on surveille le display
 			var watcherClear = scope.$watch(function (scope) {
 				return scope.ctrl.ngelt.css('display');
 			}, function (v1, v2, s) {
@@ -807,19 +816,23 @@
 				}
 			}));
 		}
+		var totalTimer;
 		watcherClears.push(scope.$watch('total', function (v1, v2, s) {
 			if (v1 !== v2) {
-				$timeout(s.ctrl.updateTotal, s.debounce || DEBOUNCE, true);
+				if(totalTimer) $timeout.cancel(totalTimer);
+				totalTimer = $timeout(s.ctrl.updateTotal, s.debounce || DEBOUNCE, true);
 			}
 		}));
+		var limitTimer;
 		watcherClears.push(scope.$watch('ngLimit', function (v1, v2, s) {
 			if (v1 !== v2) {
-				$timeout(s.ctrl.updateLimit, s.debounce || DEBOUNCE, true);
+				if(limitTimer) $timeout.cancel(limitTimer);
+				limitTimer = $timeout(s.ctrl.updateLimit, s.debounce || DEBOUNCE, true);
 			}
 		}));
 		watcherClears.push(scope.$watch('ngBegin', function (v1, v2, s) {
 			if (v1 >= 0 && v1 <= s.total - s.ctrl.getInnerLimit()) {
-				$timeout(s.ctrl.updateBegin, s.debounce || DEBOUNCE, true);
+				s.ctrl.updateBegin();
 			} else if (v1 < 0) {
 				s.ngBegin = 0;
 			} else {
