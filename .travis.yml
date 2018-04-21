@@ -4,13 +4,9 @@ node_js:
 cache:
   directories:
     - "node_modules"
-env:
-  - REPO_NAME=boxes-scroll
 branches:
   only:
   - website
-before_install:
-  - sudo apt-get install lftp
 before_script:
   - rm -rf node_modules/boxes-scroll
   - npm install
