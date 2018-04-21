@@ -1,5 +1,11 @@
 body { 
 	position: relative;
+	padding-top: 70px;
+}
+.avatar {
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
 }
 
 @media (min-width: 767px) { 

@@ -19,7 +19,7 @@ module.exports = function (env) {
 			rules: [
 				{test: /\.css$/, use: ExtractTextPlugin.extract({use: 'css-loader'})},
 				{test: /\.html$/, use: ['angular-templatecache-loader']}, 
-				{test: /\.(json|woff|woff2|eot|ico|ttf|otf|png|svg|jpg|gif)$/, use: ['file-loader']},
+				{test: /\.(json|woff|woff2|eot|ico|ttf|otf|png|svg|jpg|gif)$/, use: [{loader: 'file-loader', options: {name: '[name].[ext]'}}]},
 				{test: /\.(csv|tsv)$/, use: 'csv-loader'},
 				{test: /\.xml$/, use: 'xml-loader'}
 			]

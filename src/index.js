@@ -1,4 +1,5 @@
 /* global _ */
+import './hhfrancois.png';
 import 'bootstrap/dist/css/bootstrap.css';
 //import 'bootswatch/cerulean/bootstrap.css';
 //import 'bootswatch/cosmo/bootstrap.css';

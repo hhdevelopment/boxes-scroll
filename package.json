@@ -7,14 +7,14 @@
     "url": "https://github.com/hhdevelopment/boxes-scroll.git"
   },
   "dependencies": {
-    "express": "^4.15.2",
     "@fortawesome/fontawesome-free-webfonts": "1.x",
-    "boxes-scroll": "2.x",
     "angular": "1.x",
     "angular-ui-codemirror": "0.x",
     "bootstrap": "^3.x",
     "bootswatch": "^3.x",
+    "boxes-scroll": "2.x",
     "codemirror": "5.x",
+    "express": "^4.15.2",
     "jquery": "^3.x",
     "lodash": "^4.x"
   },

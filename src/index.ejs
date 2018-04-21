@@ -1,78 +1,99 @@
 <!DOCTYPE html>
 <html ng-app="app">
-	<head>
-		<meta charset="UTF-8">
-		<title>Demo Boxes scroll</title>
-	</head>
-	<body ng-controller="AppController as ctrl" data-spy="scroll" data-target="#navigation" data-offset="70">
-	<ng-include src="'./navbar.html'"></ng-include>
-	<ng-include src="'../navbar.html'"></ng-include>
-	<div class="container-fluid">
-		<div class="row">
-			<div id="navigation" class="col-sm-3 hidden-xs">
-				<ul class="nav nav-pills nav-stacked" role="tablist">
-					<li role="presentation">
-						<a href="#overview"><span class="fas fa-eye"></span>&nbsp;Overview</a>
-					</li>
-					<li role="presentation">
-						<a href="#requirements"><span class="fas fa-puzzle-piece"></span>&nbsp;Requirements</a>
-					</li>
-					<li role="presentation">
-						<a href="#installation"><span class="fas fa-wrench"></span>&nbsp;Installation</a> 
-					</li>
-					<li role="presentation">
-						<a href="#comparaison"><span class="far fa-check-square"></span>&nbsp;Comparaison</a>
-					</li>
-					<li role="presentation">
-						<a href="#minimal"><span class="fas fa-code"></span>&nbsp;Minimal code</a>
-					</li>
-					<li role="presentation">
-						<a href="#use"><span class="far fa-play-circle"></span>&nbsp;Use</a>
-					</li>
-					<li role="presentation">
-						<a href="#auto"><span class="fas fa-arrows-alt"></span>&nbsp;Auto direction scroll</a> 
-					</li>
-					<li role="presentation">
-						<a href="#vertical"><span class="fas fa-arrows-alt-v"></span>&nbsp;Vertical scroll</a> 
-					</li>
-					<li role="presentation">
-						<a href="#horizontal"><span class="fas fa-arrows-alt-h"></span>&nbsp;Horizontal scroll</a>
-					</li>
-					<li role="presentation">
-						<a href="#options"><span class="fas fa-cogs"></span>&nbsp;Configuration and options</a>
-					</li>
-					<li role="presentation">
-						<a href="#fulldemo"><span class="fas fa-desktop"></span>&nbsp;Full demo</a>
-					</li>
-					<li role="presentation">
-						<a href="https://github.com/hhdevelopment/boxes-scroll" target="_blank"><span class="fab fa-github"></span>&nbsp;Github</a>
-					</li>
-				</ul>
-			</div>			
-			<div class="col-xs-3 hidden-xs">
-				<!-- Placeholder - keep empty -->
-			</div> 
-			<div class="col-xs-12 col-sm-9">
-				<section id="overview">
-					<h2>boxes-scroll
-						&nbsp;&nbsp;
-						<a href="https://www.npmjs.com/package/boxes-scroll"><img src="https://img.shields.io/npm/v/boxes-scroll.svg" alt="npm version" height="18"></a>
-						<a href="https://travis-ci.org/hhdevelopment/boxes-scroll"><img src="https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master" alt="build status" height="18"></a>
-						<a href="https://github.com/hhdevelopment/boxes-scroll"><img src="https://img.shields.io/badge/hhdevelopment-boxes--scroll-orange.svg" alt="github" height="18"></a>
+  <head>
+    <meta charset="UTF-8">
+    <title>Demo Boxes scroll</title>
+  </head>
+  <body ng-controller="AppController as ctrl" data-spy="scroll" data-target="#navigation" data-offset="70">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hhdevelopment-navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://www.doyoubuzz.com/francois-achache" title="By François Achache">
+            <img class="avatar" alt="HHF" src="./hhfrancois.png">
+          </a>
+        </div>  
+        <div class="collapse navbar-collapse" id="hhdevelopment-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">BOXES-SCROLL</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/hhdevelopment"><span class="fab fa-github"></span>&nbsp;hhdevelopment</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div id="navigation" class="col-sm-3 hidden-xs">
+          <ul class="nav nav-pills nav-stacked" role="tablist">
+            <li role="presentation">
+              <a href="#overview"><span class="fas fa-eye"></span>&nbsp;Overview</a>
+            </li>
+            <li role="presentation">
+              <a href="#requirements"><span class="fas fa-puzzle-piece"></span>&nbsp;Requirements</a>
+            </li>
+            <li role="presentation">
+              <a href="#installation"><span class="fas fa-wrench"></span>&nbsp;Installation</a> 
+            </li>
+            <li role="presentation">
+              <a href="#comparaison"><span class="far fa-check-square"></span>&nbsp;Comparaison</a>
+            </li>
+            <li role="presentation">
+              <a href="#minimal"><span class="fas fa-code"></span>&nbsp;Minimal code</a>
+            </li>
+            <li role="presentation">
+              <a href="#use"><span class="far fa-play-circle"></span>&nbsp;Use</a>
+            </li>
+            <li role="presentation">
+              <a href="#auto"><span class="fas fa-arrows-alt"></span>&nbsp;Auto direction scroll</a> 
+            </li>
+            <li role="presentation">
+              <a href="#vertical"><span class="fas fa-arrows-alt-v"></span>&nbsp;Vertical scroll</a> 
+            </li>
+            <li role="presentation">
+              <a href="#horizontal"><span class="fas fa-arrows-alt-h"></span>&nbsp;Horizontal scroll</a>
+            </li>
+            <li role="presentation">
+              <a href="#options"><span class="fas fa-cogs"></span>&nbsp;Configuration and options</a>
+            </li>
+            <li role="presentation">
+              <a href="#fulldemo"><span class="fas fa-desktop"></span>&nbsp;Full demo</a>
+            </li>
+            <li role="presentation">
+              <a href="https://github.com/hhdevelopment/boxes-scroll" target="_blank"><span class="fab fa-github"></span>&nbsp;Github</a>
+            </li>
+          </ul>
+        </div>			
+        <div class="col-xs-3 hidden-xs">
+          <!-- Placeholder - keep empty -->
+        </div> 
+        <div class="col-xs-12 col-sm-9">
+          <section id="overview">
+            <h2>boxes-scroll
+              &nbsp;&nbsp;
+              <a href="https://www.npmjs.com/package/boxes-scroll"><img src="https://img.shields.io/npm/v/boxes-scroll.svg" alt="npm version" height="18"></a>
+              <a href="https://travis-ci.org/hhdevelopment/boxes-scroll"><img src="https://travis-ci.org/hhdevelopment/boxes-scroll.svg?branch=master" alt="build status" height="18"></a>
+              <a href="https://github.com/hhdevelopment/boxes-scroll"><img src="https://img.shields.io/badge/hhdevelopment-boxes--scroll-orange.svg" alt="github" height="18"></a>
 
-					</h2>
-					<h3>Overview</h3>
-					<p>boxes-scroll is a collection of 3 directives for angular 1.x : <strong>box-scroll</strong>, <strong>box-hscroll</strong> and <strong>box-vscroll</strong><br>
-						it allows to use angular directive *limitTo* synchronized with a scrollbar.<br>
-						It is very usefull when you want to show many items without impacting performance, burdened by the increase in watchers.<br>
-						Those directives limit the number of watchers and improve performance of your application.<br>
-						More, if you want to scroll in a table but your users want to see the headers fixed, it's done.<br>
-						Set size of your table in pixel on box, or set the maximun items that you want and box-scroll compute pertinent limit and manage begin variable.
-					</p>
-					<p>With boxes-scroll directives you will design your table with html simply.<br>You do not build your view in your controller. Don't mix view and model like in others table frameworks.<br>Like this you can use any front framework like bootstrap or material.</p>
-					<p>box.scroll is a generic boxe, the scroll direction depends of elements with the anglar directive ng-repeat<br>If elements are display inline, the scroll will be horizontal, instead the scroll is vertical<br>The rule for know if the elements are inline are simple, or the compute display contains 'inline' as 'inline-block' or the display equals 'table-cell'</p>
-					<p>You can use directives as element or as attribute</p>
-					<textarea  ui-codemirror="ctrl.cmHtmlOptions"><!-- AS ELEMENT -->
+            </h2>
+            <h3>Overview</h3>
+            <p>boxes-scroll is a collection of 3 directives for angular 1.x : <strong>box-scroll</strong>, <strong>box-hscroll</strong> and <strong>box-vscroll</strong><br>
+              it allows to use angular directive *limitTo* synchronized with a scrollbar.<br>
+              It is very usefull when you want to show many items without impacting performance, burdened by the increase in watchers.<br>
+              Those directives limit the number of watchers and improve performance of your application.<br>
+              More, if you want to scroll in a table but your users want to see the headers fixed, it's done.<br>
+              Set size of your table in pixel on box, or set the maximun items that you want and box-scroll compute pertinent limit and manage begin variable.
+            </p>
+            <p>With boxes-scroll directives you will design your table with html simply.<br>You do not build your view in your controller. Don't mix view and model like in others table frameworks.<br>Like this you can use any front framework like bootstrap or material.</p>
+            <p>box.scroll is a generic boxe, the scroll direction depends of elements with the anglar directive ng-repeat<br>If elements are display inline, the scroll will be horizontal, instead the scroll is vertical<br>The rule for know if the elements are inline are simple, or the compute display contains 'inline' as 'inline-block' or the display equals 'table-cell'</p>
+            <p>You can use directives as element or as attribute</p>
+            <textarea  ui-codemirror="ctrl.cmHtmlOptions"><!-- AS ELEMENT -->
 <!--box-scroll : auto scroll direction -->
 <box-scroll attributes...>
 	<!--transclude elements-->
@@ -97,226 +118,226 @@
 <div box-hscroll attributes...>
 	<!--transclude elements-->
 </div></textarea>
-					<p>All examples in this page use <strong>box-scroll</strong></p>
-					<div class="row">
-						<div class="col-sm-6 col-xs-12">
-							<h4>With directive box-scroll</h4>
-							<form class="form-group form-inline">
-								<label>In popup</label>
-								<div class="btn-group">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										With max 7 <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu dropdown-menu-right" box-scroll
-										 total="ctrl.items_200.length" ng-begin="begin0" ng-limit="limit0" max="7">
-										<li ng-repeat="item in ctrl.items_200| limitTo:limit0:begin0">
-											<a href>
-												<span class="glyphicon glyphicon-user"></span>
-												<span ng-bind="item.lastname"></span>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<label>7 items rendered ~= +7 watchers</label>
-							</form>
-							<label>In table : 5 items visible, 5 items rendered ~= +5*x watchers</label>
-							<box-scroll total="ctrl.items_200.length" ng-begin="begin1" ng-limit="limit1" style="height:200px;border:solid 1px black;">
-								<table class="table table-hover table-striped">
-									<thead>
-										<tr>
-											<th></th>
-											<th>Lastname</th>
-											<th>Firstname</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="item in ctrl.items_200|limitTo:limit1:begin1">
-											<td><span class="glyphicon glyphicon-user"></span></td>
-											<td ng-bind="item.lastname"></td>
-											<td ng-bind="item.firstname"></td>
-										</tr>
-									</tbody>
-								</table>
-							</box-scroll>
-						</div>
-						<div class="col-sm-6 col-xs-12">
-							<h4>Without directive</h4>
-							<form class="form-group form-inline">
-								<label>In popup</label>
-								<div class="btn-group">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										With overflow <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu dropdown-menu-right" style="height: 150px;overflow: auto">
-										<li ng-repeat="item in ctrl.items_200">
-											<a href>
-												<span class="glyphicon glyphicon-user"></span>
-												<span ng-bind="item.lastname"></span>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<label>200 items rendered ~= +200 watchers</label>
-							</form>
-							<label>In table : 5 items visible, 200 items rendered ~= +200*x watchers</label>
-							<div style="height: 200px; border:solid 1px black;overflow-y: scroll">
-								<table class="table table-hover table-striped">
-									<thead>
-										<tr>
-											<th></th>
-											<th>Lastname</th>
-											<th>Firstname</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="item in ctrl.items_200">
-											<td><span class="glyphicon glyphicon-user"></span></td>
-											<td ng-bind="item.lastname"></td>
-											<td ng-bind="item.firstname"></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</section>
-				<section id="requirements">
-					<h3>Requirements</h3>
-					<p>Boxes-scroll depends on only of angular(1.x)</p>
-				</section>
-				<section id="installation">
-					<h3>Installation</h3>
-					<p>Installation depends of your package and builder. But you have to add to your project those files :</p>
-					<textarea ui-codemirror="ctrl.cmJsOptions">// framework files
+            <p>All examples in this page use <strong>box-scroll</strong></p>
+            <div class="row">
+              <div class="col-sm-6 col-xs-12">
+                <h4>With directive box-scroll</h4>
+                <form class="form-group form-inline">
+                  <label>In popup</label>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      With max 7 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" box-scroll
+                        total="ctrl.items_200.length" ng-begin="begin0" ng-limit="limit0" max="7">
+                      <li ng-repeat="item in ctrl.items_200| limitTo:limit0:begin0">
+                        <a href>
+                          <span class="glyphicon glyphicon-user"></span>
+                          <span ng-bind="item.lastname"></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <label>7 items rendered ~= +7 watchers</label>
+                </form>
+                <label>In table : 5 items visible, 5 items rendered ~= +5*x watchers</label>
+                <box-scroll total="ctrl.items_200.length" ng-begin="begin1" ng-limit="limit1" style="height:200px;border:solid 1px black;">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Lastname</th>
+                        <th>Firstname</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in ctrl.items_200|limitTo:limit1:begin1">
+                        <td><span class="glyphicon glyphicon-user"></span></td>
+                        <td ng-bind="item.lastname"></td>
+                        <td ng-bind="item.firstname"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </box-scroll>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                <h4>Without directive</h4>
+                <form class="form-group form-inline">
+                  <label>In popup</label>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      With overflow <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" style="height: 150px;overflow: auto">
+                      <li ng-repeat="item in ctrl.items_200">
+                        <a href>
+                          <span class="glyphicon glyphicon-user"></span>
+                          <span ng-bind="item.lastname"></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <label>200 items rendered ~= +200 watchers</label>
+                </form>
+                <label>In table : 5 items visible, 200 items rendered ~= +200*x watchers</label>
+                <div style="height: 200px; border:solid 1px black;overflow-y: scroll">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Lastname</th>
+                        <th>Firstname</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in ctrl.items_200">
+                        <td><span class="glyphicon glyphicon-user"></span></td>
+                        <td ng-bind="item.lastname"></td>
+                        <td ng-bind="item.firstname"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="requirements">
+            <h3>Requirements</h3>
+            <p>Boxes-scroll depends on only of angular(1.x)</p>
+          </section>
+          <section id="installation">
+            <h3>Installation</h3>
+            <p>Installation depends of your package and builder. But you have to add to your project those files :</p>
+            <textarea ui-codemirror="ctrl.cmJsOptions">// framework files
 boxesscroll.css
 boxesscroll.js</textarea>
-					<h4>Install dependencies</h4>
-					<textarea ui-codemirror="ctrl.cmJsOptions">// NPM
+            <h4>Install dependencies</h4>
+            <textarea ui-codemirror="ctrl.cmJsOptions">// NPM
 npm install boxes-scroll --save
 // BOWER
 bower install boxes-scroll --save</textarea>
-					<h4>Add dependencies</h4>
-					<textarea ui-codemirror="ctrl.cmJsOptions">// REQUIRE
+            <h4>Add dependencies</h4>
+            <textarea ui-codemirror="ctrl.cmJsOptions">// REQUIRE
 require('boxes-scroll/dist/boxesscroll.js');
 require('boxes-scroll/dist/boxesscroll.css');
 // IMPORT
 import 'boxes-scroll/dist/boxesscroll.js';
 import 'boxes-scroll/dist/boxesscroll.css';</textarea>
-					<h4>Add module</h4>
-					<textarea ui-codemirror="ctrl.cmJsOptions">// Add module to angular app
+            <h4>Add module</h4>
+            <textarea ui-codemirror="ctrl.cmJsOptions">// Add module to angular app
 ng.module('app', ['boxes.scroll', ...]);</textarea>
-				</section>
-				<section id="comparaison">
-					<h3>Comparaison</h3>
-					<p>Compare boxes-scroll directives and a scroll overflow container</p>
-					<table class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th>features/impls</th>
-								<th>box-scroll / box-vscroll / box-hscroll</th>
-								<th>html table with overflow container</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Watchers</th>
-								<td class="success"><p>Limit watchers about visible rows.</p></td>
-								<td class="danger"><p>Each row increase watchers, visible or not.</p></td>
-							</tr>
-							<tr>
-								<th>Faster</th>
-								<td class="success"><p>The ng-repeat directive draws only visible rows, try demo with 2000 or 10000 item, and check/uncheck 'try without directive'.</p></td>
-								<td class="danger"><p>The ng-repeat directive draws all rows, try demo with 2000 or 10000 item, and check/uncheck 'try without directive'.</p></td>
-							</tr>
-							<tr>
-								<th>Headers</th>
-								<td class="success"><p>Headers are always visible.</p></td>
-								<td class="danger"><p>Headers go away when scroll.</p></td>
-							</tr>
-							<tr>
-								<th>Scrollbar</th>
-								<td class="success"><p>Scrollbar is collapsible, scrollbar indicator get only 4px.</p></td>
-								<td class="danger"><p>Depends to browsers, but scrollbar get minimum 16px.</p></td>
-							</tr>
-							<tr>
-								<th>Cells size</th>
-								<td class="success"><p>Cells size depends only of data visible. It's more efficient.</p></td>
-								<td class="danger"><p>Cells size depends of data in all rows. So if one cell contains too large text, all cells in the same column is changed.</p></td>
-							</tr>
-							<tr>
-								<th>Scroll indicator</th>
-								<td class="success"><p>Has scroll indicator.</p></td>
-								<td class="danger"><p>Has not.</p></td>
-							</tr>
-							<tr>
-								<th>Updatable by api</th>
-								<td class="success"><p>Really easy, just increment/decrement begin variable.<br>One item : begin = begin +/- 1;<br>One page : begin = begin +/- limit;</p></td>
-								<td class="danger"><p>Of course you can, scrollTo(value) method on the container, but value is in pixel ?!?!.</p></td>
-							</tr>
-							<tr>
-								<th>Ensure item is visible</th>
-								<td class="success"><p>Really easy too, If you know the index of item, check and update if necessary that index beween begin and begin + limit</p></td>
-								<td class="danger"><p>Of course you can, use getClientRect() on container, on item, check second one is include in the first one, and use scrollTo(value) to fix it... complicated.</p></td>
-							</tr>
-							<tr>
-								<th>Tree structure</th>
-								<td class="danger"><p>Can't be used, cause all nodes are not rendered.</p></td>
-								<td class="success"><p>Can be used, all nodes are rendered, the tree structure is retained.</p></td>
-							</tr>
-							<tr>
-								<th>Nav buttons</th>
-								<td class="danger"><p>Not present.</p></td>
-								<td class="success"><p>In native scrollbars, nav buttons are present.</p></td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
-				<section id="minimal">
-					<h3>Minimal code</h3>
-					<textarea  ui-codemirror="ctrl.cmHtmlOptions"><box-scroll ng-limit="limit" ng-begin="begin" total="items.length" max="5">
+          </section>
+          <section id="comparaison">
+            <h3>Comparaison</h3>
+            <p>Compare boxes-scroll directives and a scroll overflow container</p>
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <tr>
+                  <th>features/impls</th>
+                  <th>box-scroll / box-vscroll / box-hscroll</th>
+                  <th>html table with overflow container</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Watchers</th>
+                  <td class="success"><p>Limit watchers about visible rows.</p></td>
+                  <td class="danger"><p>Each row increase watchers, visible or not.</p></td>
+                </tr>
+                <tr>
+                  <th>Faster</th>
+                  <td class="success"><p>The ng-repeat directive draws only visible rows, try demo with 2000 or 10000 item, and check/uncheck 'try without directive'.</p></td>
+                  <td class="danger"><p>The ng-repeat directive draws all rows, try demo with 2000 or 10000 item, and check/uncheck 'try without directive'.</p></td>
+                </tr>
+                <tr>
+                  <th>Headers</th>
+                  <td class="success"><p>Headers are always visible.</p></td>
+                  <td class="danger"><p>Headers go away when scroll.</p></td>
+                </tr>
+                <tr>
+                  <th>Scrollbar</th>
+                  <td class="success"><p>Scrollbar is collapsible, scrollbar indicator get only 4px.</p></td>
+                  <td class="danger"><p>Depends to browsers, but scrollbar get minimum 16px.</p></td>
+                </tr>
+                <tr>
+                  <th>Cells size</th>
+                  <td class="success"><p>Cells size depends only of data visible. It's more efficient.</p></td>
+                  <td class="danger"><p>Cells size depends of data in all rows. So if one cell contains too large text, all cells in the same column is changed.</p></td>
+                </tr>
+                <tr>
+                  <th>Scroll indicator</th>
+                  <td class="success"><p>Has scroll indicator.</p></td>
+                  <td class="danger"><p>Has not.</p></td>
+                </tr>
+                <tr>
+                  <th>Updatable by api</th>
+                  <td class="success"><p>Really easy, just increment/decrement begin variable.<br>One item : begin = begin +/- 1;<br>One page : begin = begin +/- limit;</p></td>
+                  <td class="danger"><p>Of course you can, scrollTo(value) method on the container, but value is in pixel ?!?!.</p></td>
+                </tr>
+                <tr>
+                  <th>Ensure item is visible</th>
+                  <td class="success"><p>Really easy too, If you know the index of item, check and update if necessary that index beween begin and begin + limit</p></td>
+                  <td class="danger"><p>Of course you can, use getClientRect() on container, on item, check second one is include in the first one, and use scrollTo(value) to fix it... complicated.</p></td>
+                </tr>
+                <tr>
+                  <th>Tree structure</th>
+                  <td class="danger"><p>Can't be used, cause all nodes are not rendered.</p></td>
+                  <td class="success"><p>Can be used, all nodes are rendered, the tree structure is retained.</p></td>
+                </tr>
+                <tr>
+                  <th>Nav buttons</th>
+                  <td class="danger"><p>Not present.</p></td>
+                  <td class="success"><p>In native scrollbars, nav buttons are present.</p></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="minimal">
+            <h3>Minimal code</h3>
+            <textarea  ui-codemirror="ctrl.cmHtmlOptions"><box-scroll ng-limit="limit" ng-begin="begin" total="items.length" max="5">
 	<A ng-repeat="item in items| limitTo:limit:begin">
 		{{item}} 
 	</A>
 </box-scroll></textarea>
-					<div class="alert alert-warning" role="alert">limit and begin scope variables are driven by the directive. Useless to set them.<br>But use differents for each directive.<br>You can use controller variable if you want to test/set them. For example when you active item and you want to ensure that active item is visble.</div>
-				</section>
-				<section id="use">
-					<h3>Use</h3>
-					<ol>
-						<li>Use <strong>box-scroll</strong> or <strong>box-hscroll</strong> for box with horizontal scrolling or <strong>box-vscroll</strong> for box with vertical scrolling</li>
-						<li>Set the number of item on <abbr title="total attribute">total</abbr> attribute, usually items.length</li>
-						<li>Define a scope or controller variable begin on <abbr title="ng-begin attribute">ng-begin</abbr> attribute, don't set it, the directive will compute it.</li>
-						<li>Define a scope or controller variable limit on <abbr title="ng-limit attribute">ng-limit</abbr> attribute, don't set it, the directive will compute it.</li>
-						<li>Set the number of item that you want to see with <abbr title="max attribute">max</abbr> attribute, or set css height for define the height/max-height of the container</li>
-						<li>On directive <strong>ng-repeat</strong> add angular filter limitTo with limit and begin variables.</li>
-					</ol>
-				</section>
-				<section id="auto">
-					<h3>Auto direction scroll</h3>
-					<label>box-scroll as directive element</label>
-					<div class="row">
-						<div class="col-xs-6">
-							<b>With 'div' display='block' element</b>
-							<box-scroll total="ctrl.items_200.length" ng-begin="beginx1" ng-limit="limitx1" style="height:200px;border:solid 1px black;">
-								<div ng-repeat="item in ctrl.items_200|limitTo:limitx1:beginx1" style="text-align: center;padding: 5px;">
-									<span class="glyphicon glyphicon-user"></span>
-									<span ng-bind="item.lastname"></span>
-								</div>
-							</box-scroll>								
-						</div>
-						<div class="col-xs-6">
-							<b>With 'a' display='inline-block' element</b>
-							<box-scroll total="ctrl.items_200.length" ng-begin="beginx2" ng-limit="limitx2" style="height:200px;border:solid 1px black;">
-								<a ng-repeat="item in ctrl.items_200|limitTo:limitx2:beginx2" style="text-align: center;padding: 5px;">
-									<span class="glyphicon glyphicon-user"></span>
-									<span ng-bind="item.lastname"></span>
-								</a>
-							</box-scroll>								
-						</div>
-					</div>
-					<h4>HTML</h4>
-					<p>Almost same code, results completly different. ng-repeat on 'div' element or 'a' element</p>
-					<textarea ui-codemirror="ctrl.cmHtmlOptions">
+            <div class="alert alert-warning" role="alert">limit and begin scope variables are driven by the directive. Useless to set them.<br>But use differents for each directive.<br>You can use controller variable if you want to test/set them. For example when you active item and you want to ensure that active item is visble.</div>
+          </section>
+          <section id="use">
+            <h3>Use</h3>
+            <ol>
+              <li>Use <strong>box-scroll</strong> or <strong>box-hscroll</strong> for box with horizontal scrolling or <strong>box-vscroll</strong> for box with vertical scrolling</li>
+              <li>Set the number of item on <abbr title="total attribute">total</abbr> attribute, usually items.length</li>
+              <li>Define a scope or controller variable begin on <abbr title="ng-begin attribute">ng-begin</abbr> attribute, don't set it, the directive will compute it.</li>
+              <li>Define a scope or controller variable limit on <abbr title="ng-limit attribute">ng-limit</abbr> attribute, don't set it, the directive will compute it.</li>
+              <li>Set the number of item that you want to see with <abbr title="max attribute">max</abbr> attribute, or set css height for define the height/max-height of the container</li>
+              <li>On directive <strong>ng-repeat</strong> add angular filter limitTo with limit and begin variables.</li>
+            </ol>
+          </section>
+          <section id="auto">
+            <h3>Auto direction scroll</h3>
+            <label>box-scroll as directive element</label>
+            <div class="row">
+              <div class="col-xs-6">
+                <b>With 'div' display='block' element</b>
+                <box-scroll total="ctrl.items_200.length" ng-begin="beginx1" ng-limit="limitx1" style="height:200px;border:solid 1px black;">
+                  <div ng-repeat="item in ctrl.items_200|limitTo:limitx1:beginx1" style="text-align: center;padding: 5px;">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span ng-bind="item.lastname"></span>
+                  </div>
+                </box-scroll>								
+              </div>
+              <div class="col-xs-6">
+                <b>With 'a' display='inline-block' element</b>
+                <box-scroll total="ctrl.items_200.length" ng-begin="beginx2" ng-limit="limitx2" style="height:200px;border:solid 1px black;">
+                  <a ng-repeat="item in ctrl.items_200|limitTo:limitx2:beginx2" style="text-align: center;padding: 5px;">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span ng-bind="item.lastname"></span>
+                  </a>
+                </box-scroll>								
+              </div>
+            </div>
+            <h4>HTML</h4>
+            <p>Almost same code, results completly different. ng-repeat on 'div' element or 'a' element</p>
+            <textarea ui-codemirror="ctrl.cmHtmlOptions">
 <box-scroll total="ctrl.items_200.length" ng-begin="begin" ng-limit="limit" 
 	style="height:200px;border:solid 1px black;">
 	<DIV|A g-repeat="item in ctrl.items_200|limitTo:limit:begin" 
@@ -325,30 +346,30 @@ ng.module('app', ['boxes.scroll', ...]);</textarea>
 		<span ng-bind="item.lastname"></span>
 	</DIV|A>
 </box-scroll></textarea>
-				</section>
-				<section id="vertical">
-					<h3>Vertical scrolling</h3>
-					<label>box-vscroll as directive element</label>
-					<box-vscroll total="ctrl.items_200.length" ng-begin="begin2" ng-limit="limit2" style="height:200px;border:solid 1px black;">
-						<table class="table table-hover table-striped">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Lastname</th>
-									<th>Firstname</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="item in ctrl.items_200|limitTo:limit2:begin2">
-									<td><span class="glyphicon glyphicon-user"></span></td>
-									<td ng-bind="item.lastname"></td>
-									<td ng-bind="item.firstname"></td>
-								</tr>
-							</tbody>
-						</table>
-					</box-vscroll>								
-					<h4>HTML</h4>
-					<textarea  ui-codemirror="ctrl.cmHtmlOptions">
+          </section>
+          <section id="vertical">
+            <h3>Vertical scrolling</h3>
+            <label>box-vscroll as directive element</label>
+            <box-vscroll total="ctrl.items_200.length" ng-begin="begin2" ng-limit="limit2" style="height:200px;border:solid 1px black;">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Lastname</th>
+                    <th>Firstname</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in ctrl.items_200|limitTo:limit2:begin2">
+                    <td><span class="glyphicon glyphicon-user"></span></td>
+                    <td ng-bind="item.lastname"></td>
+                    <td ng-bind="item.firstname"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </box-vscroll>								
+            <h4>HTML</h4>
+            <textarea  ui-codemirror="ctrl.cmHtmlOptions">
 <box-vscroll total="ctrl.items.length" ng-begin="begin" ng-limit="limit" style="height:200px;border:solid 1px black;">
 	<table class="table table-hover table-striped">
 		<thead>
@@ -367,26 +388,26 @@ ng.module('app', ['boxes.scroll', ...]);</textarea>
 		</tbody>
 	</table>
 </box-vscroll></textarea>
-					<label>box-vscroll as directive attribute</label>
-					<form class="form-group">
-						<label>For popup use max attribute instead to set the height</label>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								With max 7 <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-right" box-vscroll
-								 total="ctrl.items_200.length" ng-begin="begin3" ng-limit="limit3" max="7">
-								<li ng-repeat="item in ctrl.items| limitTo:limit3:begin3">
-									<a href>
-										<span class="glyphicon glyphicon-user"></span>
-										<span ng-bind="item.lastname"></span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</form>
-					<h4>HTML</h4>
-					<textarea  ui-codemirror="ctrl.cmHtmlOptions">
+            <label>box-vscroll as directive attribute</label>
+            <form class="form-group">
+              <label>For popup use max attribute instead to set the height</label>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  With max 7 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" box-vscroll
+                    total="ctrl.items_200.length" ng-begin="begin3" ng-limit="limit3" max="7">
+                  <li ng-repeat="item in ctrl.items| limitTo:limit3:begin3">
+                    <a href>
+                      <span class="glyphicon glyphicon-user"></span>
+                      <span ng-bind="item.lastname"></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </form>
+            <h4>HTML</h4>
+            <textarea  ui-codemirror="ctrl.cmHtmlOptions">
 <div class="btn-group">
 	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		With max 7 <span class="caret"></span>
@@ -401,196 +422,196 @@ ng.module('app', ['boxes.scroll', ...]);</textarea>
 		</li>
 	</ul>
 </div></textarea>
-				</section>
-				<section id="horizontal">
-					<h3>Horizontal scrolling</h3>
-					<box-hscroll test total="ctrl.items_200.length" ng-begin="begin4" ng-limit="limit4" style="border:solid 1px black;height: 57px;">
-						<a ng-repeat="item in ctrl.items_200| limitTo:limit4:begin4" class="alert alert-info" ng-bind="item.lastname">
-						</a>
-					</box-hscroll>
-					<h4>HTML</h4>
-					<textarea  ui-codemirror="ctrl.cmHtmlOptions">
+          </section>
+          <section id="horizontal">
+            <h3>Horizontal scrolling</h3>
+            <box-hscroll test total="ctrl.items_200.length" ng-begin="begin4" ng-limit="limit4" style="border:solid 1px black;height: 57px;">
+              <a ng-repeat="item in ctrl.items_200| limitTo:limit4:begin4" class="alert alert-info" ng-bind="item.lastname">
+              </a>
+            </box-hscroll>
+            <h4>HTML</h4>
+            <textarea  ui-codemirror="ctrl.cmHtmlOptions">
 <box-hscroll  total="ctrl.items.length" ng-begin="begin" ng-limit="limit" style="border:solid 1px black;height: 57px;">
 	<a class="alert alert-info" ng-repeat="item in ctrl.items| limitTo:limit:begin" ng-bind="item.lastname">
 	</a>
 </box-hscroll></textarea>
-				</section>
-				<section id="options">
-					<h3>Configuration and options</h3>
-					<h4>Configuration</h4>
-					<p>As seen before in use section</p>
-					<ul>
-						<li><strong>total</strong> : The number of item, usually items.length</li>
-						<li><strong>ng-begin</strong> : A scope or controller variable, <span class="text-danger"> Each directive have to have its own variable.</span>. The directive manage it</li>
-						<li><strong>ng-limit</strong> : A scope or controller variable, <span class="text-danger"> Each directive have to have its own variable.</span>. The directive manage it</li>
-						<li><strong>max</strong> : Number of item that you want to see. <span class="text-danger">OR</span><br>
-							<strong>style height/max-height</strong> : The height of container. The html layout allows to not set width/max-width for box-hscroll
-						</li>
-					</ul>
-					<h4>Options</h4>
-					<blockquote>
-						<p>Framework with too much options is a bad framework.</p>
-						<footer>Confucius (2018) (not sure)</footer>
-					</blockquote>
-					<p>So here only 3 options</p>
-					<ul>
-						<li><strong>show-info-delay</strong> : how long the scrolling info appear. <abbr title="Default value" class="initialism">1000 ms</abbr>.</li>
-						<li><strong>debounce</strong> : Set the delay before compute ng-limit. <abbr title="Default value" class="initialism">100ms</abbr>. Increase it if render each row/item is too long.</li>
-						<li><strong>allow-keynav</strong> : When the component has focus enabled keys navigation. <abbr title="Default value" class="initialism">false</abbr>. Usualy in table you can set true, but for popup dropdown, you should want probably control keys navigation ouside the component</li>
-					</ul>
-				</section>
-				<section id="fulldemo">
-					<h3>Full Demo with many items</h3>
-					<div class="row">
-						<div class="col-xs-2">
-							<div class="form-group">
-								<label>Height</label>
-								<div class="input-group">
-									<span class="input-group-addon"><span class="glyphicon glyphicon-resize-vertical"></span></span>
-									<input type="number" class="form-control" ng-model="ctrl.height">
-								</div>
-							</div> 
-						</div>
-						<div class="col-xs-4">
-							<div class="form-group">
-								<label>Filter</label>
-								<div class="input-group">
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-search"></span>
-									</span>
-									<input type="text" class="form-control" placeholder="Search" ng-model="search">
-									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="search = ''">
-											<span class="glyphicon glyphicon-remove"></span>
-										</button>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-4">
-							<div class="form-group">
-								<label class="text-danger">!!! Many items imply freezes</label>
-								<div class="input-group" title="Try without the directive with 2000 or 10000 elements">
-									<span class="input-group-addon">
-										<input type="checkbox" ng-model="withoutDirective">
-									</span>
-									<input type="text" class="form-control" placeholder="Native scroll" readonly="">
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-2">
-							<div class="form-group">
-								<label>Number items</label>
-								<div class="dropdown">
-									<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-										{{ctrl.nb}} items
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu">
-										<li ng-class="{'active':ctrl.nb === 0}" ng-click="ctrl.nb = 0;"><a href>0 item</a></li>
-										<li ng-class="{'active':ctrl.nb === 3}" ng-click="ctrl.nb = 3;"><a href>3 items</a></li>
-										<li ng-class="{'active':ctrl.nb === 5}" ng-click="ctrl.nb = 5;"><a href>5 items</a></li>
-										<li ng-class="{'active':ctrl.nb === 20}" ng-click="ctrl.nb = 20;"><a href>20 items</a></li>
-										<li ng-class="{'active':ctrl.nb === 200}" ng-click="ctrl.nb = 200;"><a href>200 items</a></li>
-										<li ng-class="{'active':ctrl.nb === 2000}" ng-click="ctrl.nb = 2000;"><a href>2000 items</a></li>
-										<li ng-class="{'active':ctrl.nb === 1000}" ng-click="ctrl.nb = 10000;"><a href>10000 items</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div  ng-if="!withoutDirective">
-						<box-scroll show-info-delay="2000" total="filteredItems.length" allow-keynav="true"
-										 ng-begin="ctrl.begin" ng-limit="ctrl.limit" ng-style="{'height':ctrl.height + 'px'}"
-										 style="border:solid 1px black;">
-							<table class="table table-hover table-striped">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Lastname</th>
-										<th>Firstname</th>
-										<th>Company</th>
-										<th>Email</th>
-										<th>Phone</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="item in filteredItems = (ctrl.items|limitTo:ctrl.nb:0|filter:search)|limitTo:ctrl.limit:ctrl.begin">
-										<td><span class="glyphicon glyphicon-user"></span></td>
-										<td ng-bind="item.lastname"></td>
-										<td ng-bind="item.firstname"></td>
-										<td ng-bind="item.company"></td>
-										<td ng-bind="item.email"></td>
-										<td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
-									</tr>
-								</tbody>
-							</table>
-						</box-scroll>
-					</div>
-					<div  ng-if="withoutDirective">
-						<div style="height: {{ctrl.height}}px; border:solid 1px black;overflow-y: auto">
-							<table class="table table-hover table-striped">
-								<thead>
-									<tr>
-										<th></th>
-										<th>Lastname</th>
-										<th>Firstname</th>
-										<th>Company</th>
-										<th>Email</th>
-										<th>Phone</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="item in filteredItems = (ctrl.items|limitTo:ctrl.nb:0|filter:search)">
-										<td><span class="glyphicon glyphicon-user"></span></td>
-										<td ng-bind="item.lastname"></td>
-										<td ng-bind="item.firstname"></td>
-										<td ng-bind="item.company"></td>
-										<td ng-bind="item.email"></td>
-										<td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<nav class="pull-right" ng-class="{'invisible':withoutDirective}">
-						<ul class="pagination">
-							<li class="disabled">
-								<a href>
-									<span>Pilot scrolling : </span>
-								</a>
-							</li>
-							<li ng-click="ctrl.begin = ctrl.begin - (ctrl.limit - 1);">
-								<a href>
-									<span class="glyphicon glyphicon-backward"></span>
-								</a>
-							</li>
-							<li ng-click="ctrl.begin = ctrl.begin - 1;">
-								<a href>
-									<span class="glyphicon glyphicon-chevron-left"></span>
-								</a>
-							</li>
-							<li class="disabled">
-								<a href>
-									<span ng-bind="ctrl.begin + 1"></span>
-								</a>
-							</li>
-							<li ng-click="ctrl.begin = ctrl.begin + 1;">
-								<a href>
-									<span class="glyphicon glyphicon-chevron-right"></span>
-								</a>
-							</li>
-							<li ng-click="ctrl.begin = ctrl.begin + (ctrl.limit - 1);">
-								<a href>
-									<span class="glyphicon glyphicon-forward"></span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</section>
-			</div>
-		</div>
-	</div>
-</body>
+          </section>
+          <section id="options">
+            <h3>Configuration and options</h3>
+            <h4>Configuration</h4>
+            <p>As seen before in use section</p>
+            <ul>
+              <li><strong>total</strong> : The number of item, usually items.length</li>
+              <li><strong>ng-begin</strong> : A scope or controller variable, <span class="text-danger"> Each directive have to have its own variable.</span>. The directive manage it</li>
+              <li><strong>ng-limit</strong> : A scope or controller variable, <span class="text-danger"> Each directive have to have its own variable.</span>. The directive manage it</li>
+              <li><strong>max</strong> : Number of item that you want to see. <span class="text-danger">OR</span><br>
+                <strong>style height/max-height</strong> : The height of container. The html layout allows to not set width/max-width for box-hscroll
+              </li>
+            </ul>
+            <h4>Options</h4>
+            <blockquote>
+              <p>Framework with too much options is a bad framework.</p>
+              <footer>Confucius (2018) (not sure)</footer>
+            </blockquote>
+            <p>So here only 3 options</p>
+            <ul>
+              <li><strong>show-info-delay</strong> : how long the scrolling info appear. <abbr title="Default value" class="initialism">1000 ms</abbr>.</li>
+              <li><strong>debounce</strong> : Set the delay before compute ng-limit. <abbr title="Default value" class="initialism">100ms</abbr>. Increase it if render each row/item is too long.</li>
+              <li><strong>allow-keynav</strong> : When the component has focus enabled keys navigation. <abbr title="Default value" class="initialism">false</abbr>. Usualy in table you can set true, but for popup dropdown, you should want probably control keys navigation ouside the component</li>
+            </ul>
+          </section>
+          <section id="fulldemo">
+            <h3>Full Demo with many items</h3>
+            <div class="row">
+              <div class="col-xs-2">
+                <div class="form-group">
+                  <label>Height</label>
+                  <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-resize-vertical"></span></span>
+                    <input type="number" class="form-control" ng-model="ctrl.height">
+                  </div>
+                </div> 
+              </div>
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label>Filter</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search" ng-model="search">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="search = ''">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label class="text-danger">!!! Many items imply freezes</label>
+                  <div class="input-group" title="Try without the directive with 2000 or 10000 elements">
+                    <span class="input-group-addon">
+                      <input type="checkbox" ng-model="withoutDirective">
+                    </span>
+                    <input type="text" class="form-control" placeholder="Native scroll" readonly="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div class="form-group">
+                  <label>Number items</label>
+                  <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      {{ctrl.nb}} items
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li ng-class="{'active':ctrl.nb === 0}" ng-click="ctrl.nb = 0;"><a href>0 item</a></li>
+                      <li ng-class="{'active':ctrl.nb === 3}" ng-click="ctrl.nb = 3;"><a href>3 items</a></li>
+                      <li ng-class="{'active':ctrl.nb === 5}" ng-click="ctrl.nb = 5;"><a href>5 items</a></li>
+                      <li ng-class="{'active':ctrl.nb === 20}" ng-click="ctrl.nb = 20;"><a href>20 items</a></li>
+                      <li ng-class="{'active':ctrl.nb === 200}" ng-click="ctrl.nb = 200;"><a href>200 items</a></li>
+                      <li ng-class="{'active':ctrl.nb === 2000}" ng-click="ctrl.nb = 2000;"><a href>2000 items</a></li>
+                      <li ng-class="{'active':ctrl.nb === 1000}" ng-click="ctrl.nb = 10000;"><a href>10000 items</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div  ng-if="!withoutDirective">
+              <box-scroll show-info-delay="2000" total="filteredItems.length" allow-keynav="true"
+                          ng-begin="ctrl.begin" ng-limit="ctrl.limit" ng-style="{'height':ctrl.height + 'px'}"
+                          style="border:solid 1px black;">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Lastname</th>
+                      <th>Firstname</th>
+                      <th>Company</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in filteredItems = (ctrl.items|limitTo:ctrl.nb:0|filter:search)|limitTo:ctrl.limit:ctrl.begin">
+                      <td><span class="glyphicon glyphicon-user"></span></td>
+                      <td ng-bind="item.lastname"></td>
+                      <td ng-bind="item.firstname"></td>
+                      <td ng-bind="item.company"></td>
+                      <td ng-bind="item.email"></td>
+                      <td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </box-scroll>
+            </div>
+            <div  ng-if="withoutDirective">
+              <div style="height: {{ctrl.height}}px; border:solid 1px black;overflow-y: auto">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Lastname</th>
+                      <th>Firstname</th>
+                      <th>Company</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in filteredItems = (ctrl.items|limitTo:ctrl.nb:0|filter:search)">
+                      <td><span class="glyphicon glyphicon-user"></span></td>
+                      <td ng-bind="item.lastname"></td>
+                      <td ng-bind="item.firstname"></td>
+                      <td ng-bind="item.company"></td>
+                      <td ng-bind="item.email"></td>
+                      <td><span class="glyphicon glyphicon-phone"></span><span ng-bind="item.phone"></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <nav class="pull-right" ng-class="{'invisible':withoutDirective}">
+              <ul class="pagination">
+                <li class="disabled">
+                  <a href>
+                    <span>Pilot scrolling : </span>
+                  </a>
+                </li>
+                <li ng-click="ctrl.begin = ctrl.begin - (ctrl.limit - 1);">
+                  <a href>
+                    <span class="glyphicon glyphicon-backward"></span>
+                  </a>
+                </li>
+                <li ng-click="ctrl.begin = ctrl.begin - 1;">
+                  <a href>
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                </li>
+                <li class="disabled">
+                  <a href>
+                    <span ng-bind="ctrl.begin + 1"></span>
+                  </a>
+                </li>
+                <li ng-click="ctrl.begin = ctrl.begin + 1;">
+                  <a href>
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </li>
+                <li ng-click="ctrl.begin = ctrl.begin + (ctrl.limit - 1);">
+                  <a href>
+                    <span class="glyphicon glyphicon-forward"></span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
 
