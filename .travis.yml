@@ -20,3 +20,10 @@ deploy:
       - "webpack"
     on:
       branch: website
+  - provider: pages
+    local-dir: public_html
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN
+    keep-history: true
+    on:
+      branch: website
