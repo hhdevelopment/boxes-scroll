@@ -6,7 +6,7 @@
 
 ## Web site
 
-http://hhdev.fr/boxes-scroll/index.html#
+https://boxes-scroll.herokuapp.com/
 
 ## Overview
 
