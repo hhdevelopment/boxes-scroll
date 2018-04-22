@@ -6,6 +6,8 @@
 
 ## Web site
 
+https://hhdevelopment.github.io/boxes-scroll/
+
 https://boxes-scroll.herokuapp.com/
 
 ## Overview
